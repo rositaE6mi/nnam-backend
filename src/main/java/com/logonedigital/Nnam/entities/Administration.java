@@ -3,6 +3,8 @@ package com.logonedigital.Nnam.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,10 @@ public class Administration implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+
+
+    @NotEmpty(message = "Please fill this")
+    @NotNull( message = "This field can't be null")
 
     private String nom;
 
