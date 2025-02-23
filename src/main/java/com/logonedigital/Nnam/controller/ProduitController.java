@@ -6,6 +6,7 @@ import com.logonedigital.Nnam.services.Produit.ProduitService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 //@RequestMapping("/api/produits")
-
+@Slf4j
 public class ProduitController {
     private final ProduitService produitService;
 
@@ -24,6 +25,7 @@ public class ProduitController {
 
     @PostMapping("api/produit/add")
     public ResponseEntity<String> addProduit(@Valid @RequestBody Produit produit) {
+        log.info("{}",produit);
         this.produitService.addProduit(produit);
         return ResponseEntity
                 .status(201)
