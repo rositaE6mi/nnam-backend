@@ -22,8 +22,8 @@ public class CommandeController {
     }
     // 📌 Créer une nouvelle commande
     @PostMapping
-    public ResponseEntity<String> addCommande(@Valid @RequestBody CommandeService commandeService) {
-       this.commandeService.addCommande(commandeService);
+    public ResponseEntity<String> addCommande(@Valid @RequestBody Commande commande) {
+       this.commandeService.addCommande(commande);
         return ResponseEntity
                 .status(201)
                 .body("commande ajouter avec succes");
