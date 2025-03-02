@@ -1,6 +1,7 @@
 package com.logonedigital.Nnam.controller;
 
 import com.logonedigital.Nnam.entities.Commande;
+import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.services.Commande.CommandeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class CommandeController {
     }
     // 📌 Créer une nouvelle commande
     @PostMapping
-    public ResponseEntity<String> addCommande(@Valid @RequestBody CommandeService commandeService) {
-       this.commandeService.addCommande(commandeService);
+    public ResponseEntity<String> addCommande(@Valid @RequestBody Commande commande) {
+       this.commandeService.addCommande(commande);
         return ResponseEntity
                 .status(201)
                 .body("commande ajouter avec succes");
@@ -31,27 +32,32 @@ public class CommandeController {
 
     // 📌 Obtenir une commande par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Commande> getCommande(@PathVariable Integer commandeId) {
-        return ResponseEntity
-                .status(200)
-                .body(this.getCommande(commandeId).getBody());
+    public ResponseEntity<Commande> getCommande(@PathVariable("id") Integer commandeId) {
+        Commande commande = commandeService.getCommande(commandeId); // ✅ Appelle le service au lieu de lui-même
+        return ResponseEntity.ok(commande);
     }
     // 📌 Mettre à jour une commande (200 OK ou 404 Not Found)
     @PutMapping("/{id}")
-    public ResponseEntity<Commande> UpdateCommande(@PathVariable Integer id, @RequestBody Commande commande) {
-        Optional<Commande> UpdateCommande = commandeService.UpdateCommande(id, commande);
-        return UpdateCommande
-                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<?> UpdateCommande(@PathVariable Integer id, @RequestBody Commande commande) {
+        try {
+            commandeService.UpdateCommande(id, commande);
+            return new ResponseEntity<>("Commande mise à jour avec succès", HttpStatus.OK); // Retourne 200 OK
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND); // Retourne 404 Not Found avec un message d'erreur
+        }
     }
 
     // 📌 Supprimer une commande (204 No Content ou 404 Not Found)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> DeleteCommande(@PathVariable Integer id) {
+    public ResponseEntity<String> DeleteCommande(@PathVariable Integer id) {
         boolean deleted = commandeService.DeleteCommande(id);
-        return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (deleted) {
+            return ResponseEntity.ok("La commande a été supprimée avec succès");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La commande n'a pas été trouvée");
+        }
     }
+
 
     // 📌 Lister toutes les commandes (200 OK ou 204 No Content si liste vide)
     @GetMapping

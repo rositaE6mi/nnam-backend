@@ -22,6 +22,9 @@ public class Commande implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commandeId;
+    private Date createdAt;
+    private Date UpdatedAt;
+    private String reference;
     private Date dateCommande;
     private String status;
     private int total;
