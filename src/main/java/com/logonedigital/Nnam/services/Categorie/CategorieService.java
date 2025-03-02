@@ -6,10 +6,11 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 public interface CategorieService {
-    void addCategorie(@Valid Categorie categorie);
-    Categorie getCategorieById(Integer IdCat);
+    Categorie addCategorie(Categorie categorie);
+    Categorie updateCategorie(int id, Categorie categorie);
+    void deleteCategorie(int idCat);
+    Categorie getCategorie(int idCat);
     List<Categorie> getAllCategories();
-    //Optional<Produit> getProduitById(int id);
-    void updateCategorie(Integer IdCat, Categorie categorie);
-    void deleteCategorie(Integer IdCat);
+
+    boolean existsById(int idCat);
 }

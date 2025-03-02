@@ -1,65 +1,48 @@
 package com.logonedigital.Nnam.controller;
 
-
 import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.services.Produit.ProduitService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-//@RequestMapping("/api/produits")
-@Slf4j
+@RequestMapping("/api/produits")
 public class ProduitController {
-    private final ProduitService produitService;
 
-    public ProduitController(ProduitService produitService) {
+    @Autowired
+    private ProduitService produitService;
 
-        this.produitService = produitService;
+    @PostMapping("/add")
+    public ResponseEntity<Produit> addProduit(@Valid @RequestBody Produit produit) {
+        Produit savedProduit = produitService.addProduit(produit);
+        return ResponseEntity.status(201).body(savedProduit);
     }
 
-    @PostMapping("api/produit/add")
-    public ResponseEntity<String> addProduit(@Valid @RequestBody Produit produit) {
-        log.info("{}",produit);
-        this.produitService.addProduit(produit);
-        return ResponseEntity
-                .status(201)
-                .body("Created successfully !");
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Produit> updateProduit(@PathVariable int id, @RequestBody Produit produit) {
+        Produit updatedProduit = produitService.updateProduit(id, produit);
+        return ResponseEntity.status(200).body(updatedProduit);
     }
 
-    @GetMapping("api/produit/get_all")
-    public ResponseEntity<List<Produit>> getAllProduits(){
-        return ResponseEntity
-                .status(200)
-                .body(this.produitService.getAllProduits());
-    }
-
-    @GetMapping("api/produit/get_by_id/{id}")
-    public ResponseEntity<Produit> getProduitById(@Parameter(description = "ID du produit") @PathVariable Integer id) {
-        return ResponseEntity
-                .status(200)
-                .body(this.produitService.getProduitById(id));
-    }
-
-    @PutMapping(path="api/produit/update_by_id/{id}")
-    public ResponseEntity<String> updateProduit(@PathVariable Integer id, @RequestBody Produit produit) {
-        produitService.updateProduit(id, produit);
-        return ResponseEntity
-                .status(202)
-                .body("Update successfully");
-    }
-
-    @DeleteMapping("api/produit/delete_by_id/{id}")
-    public ResponseEntity<String> deleteProduit(@Parameter(description = "ID du produit") @PathVariable Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteProduit(@PathVariable int id) {
         produitService.deleteProduit(id);
-        return ResponseEntity
-                .status(202)
-                .body("Delete successfully");
+        return ResponseEntity.status(204).build();
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Produit> getProduit(@PathVariable int id) {
+        Produit produit = produitService.getProduit(id);
+        return ResponseEntity.status(200).body(produit);
+    }
+
+    @GetMapping("/get_all")
+    public ResponseEntity<List<Produit>> getAllProduits() {
+        List<Produit> produits = produitService.getAllProduits();
+        return ResponseEntity.status(200).body(produits);
+    }
 }
