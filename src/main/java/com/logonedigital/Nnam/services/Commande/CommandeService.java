@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Service
 public interface CommandeService {
-    void addCommande(@Valid CommandeService commandeService);
+    void addCommande(@Valid Commande commande);
     Optional<Commande> UpdateCommande(Integer commandeId, Commande commande);
     boolean DeleteCommande(Integer commandeId);
     List<Commande> listerCommandes();
+    Optional<Commande> getCommandeById(Integer commandeId);
 }
