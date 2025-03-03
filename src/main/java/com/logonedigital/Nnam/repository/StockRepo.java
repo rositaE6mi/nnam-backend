@@ -1,8 +1,10 @@
 package com.logonedigital.Nnam.repository;
 
-import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.entities.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface StockRepo extends JpaRepository<Stock, Integer> {
+    boolean existsByNom(String nom);
 }
