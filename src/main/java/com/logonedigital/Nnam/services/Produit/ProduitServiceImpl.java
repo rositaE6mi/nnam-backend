@@ -3,6 +3,7 @@ package com.logonedigital.Nnam.services.Produit;
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.entities.Stock;
+import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import com.logonedigital.Nnam.repository.ProduitRepo;
 import com.logonedigital.Nnam.repository.StockRepo;
@@ -27,11 +28,11 @@ public class ProduitServiceImpl implements ProduitService {
     public Produit addProduit(Produit produit) {
         // Vérifiez que la catégorie existe
         Categorie categorie = categorieRepository.findById(produit.getCategorie().getIdCat())
-                .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'ID : " + produit.getCategorie().getIdCat()));
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produit.getCategorie().getIdCat()));
 
         // Vérifiez que le stock est fourni
         if (produit.getStock() == null) {
-            throw new RuntimeException("Le stock est obligatoire pour créer un produit.");
+            throw new ResourceNotFoundException("Le stock est obligatoire pour créer un produit.");
         }
 
         // Associez la catégorie et le stock au produit
@@ -45,7 +46,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit updateProduit(int id, Produit produit) {
         Produit existingProduit = produitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé avec l'ID : " + id));
 
         // Mettez à jour les champs du produit
         existingProduit.setNomProduit(produit.getNomProduit());
@@ -56,7 +57,7 @@ public class ProduitServiceImpl implements ProduitService {
         // Mettez à jour la catégorie si elle est fournie
         if (produit.getCategorie() != null) {
             Categorie categorie = categorieRepository.findById(produit.getCategorie().getIdCat())
-                    .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'ID : " + produit.getCategorie().getIdCat()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produit.getCategorie().getIdCat()));
             existingProduit.setCategorie(categorie);
         }
 
@@ -72,7 +73,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public void deleteProduit(int idProduit) {
         if (!produitRepository.existsById(idProduit)) {
-            throw new RuntimeException("Produit non trouvé avec l'ID : " + idProduit);
+            throw new ResourceNotFoundException("Produit non trouvé avec l'ID : " + idProduit);
         }
         produitRepository.deleteById(idProduit);
     }
@@ -80,7 +81,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit getProduit(int idProduit) {
         return produitRepository.findById(idProduit)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + idProduit));
+                .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé avec l'ID : " + idProduit));
     }
 
     @Override
