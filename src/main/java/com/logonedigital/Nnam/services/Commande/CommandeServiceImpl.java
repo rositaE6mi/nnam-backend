@@ -16,13 +16,13 @@ public class CommandeServiceImpl implements CommandeService {
 
     private final CommandeRepo commandeRepo;
 
-
     public CommandeServiceImpl(CommandeRepo commandeRepo) {
         this.commandeRepo = commandeRepo;
     }
 
 
     // 📌 Ajouter une nouvelle commande
+<<<<<<< HEAD
     @Override
     public void addCommande(@Valid Commande commande) {
         Optional<Commande> commandeToSave = this.commandeRepo.findByReference(commande.getReference());
@@ -50,9 +50,18 @@ public class CommandeServiceImpl implements CommandeService {
 
         // Sauvegarder les modifications
         this.commandeRepo.saveAndFlush(commandeToUpdate);
-    }
+=======
+
 
     @Override
+    public void addCommande(Commande commande) {
+        commandeRepo.save(commande);
+>>>>>>> origin/lamairie
+    }
+
+    // 📌 Mettre à jour une commande (Version avec `Optional`)
+    @Override
+<<<<<<< HEAD
     public Commande getCommande(Integer commandeId) {
         return this.commandeRepo.findById(commandeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Commande non trouvée !"));
@@ -67,8 +76,30 @@ public class CommandeServiceImpl implements CommandeService {
             return true; // ✅ Retourne vrai si supprimée
         }
         return false; // ✅ Retourne faux si commande non trouvée
+=======
+    public Optional<Commande> UpdateCommande(Integer commandeId, Commande commande) {
+        return commandeRepo.findById(commandeId).map(existingCommande -> {
+            existingCommande.setDateCommande(commande.getDateCommande());
+            existingCommande.setStatus(commande.getStatus());
+            existingCommande.setTotal(commande.getTotal());
+            existingCommande.setFacture(commande.getFacture());
+            existingCommande.setLigneCommande(commande.getLigneCommande());
+            return Optional.of(commandeRepo.save(existingCommande));
+        }).orElse(Optional.empty());
     }
 
+    // 📌 Supprimer une commande
+    @Override
+    public boolean DeleteCommande(Integer commandeId) {
+        if (commandeRepo.existsById(commandeId)) {
+            commandeRepo.deleteById(commandeId);
+            return true;
+        }
+        return false;
+>>>>>>> origin/lamairie
+    }
+
+    // 📌 Lister toutes les commandes
     @Override
     public List<Commande> listerCommandes() {
         return commandeRepo.findAll();
