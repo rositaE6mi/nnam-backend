@@ -2,6 +2,7 @@ package com.logonedigital.Nnam.controller;
 
 import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.services.utilisateur.UtilisateurService;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UtilisateurController {
     }
 
     @PostMapping (path = "/add")
-    public ResponseEntity<String> addUtilisateur(@RequestBody Utilisateur utilisateur){
+    public ResponseEntity<String> addUtilisateur(@Valid @RequestBody Utilisateur utilisateur){
         this.utilisateurService.addUtilisateur(utilisateur);
         return ResponseEntity
                 .status(201)
@@ -34,14 +35,14 @@ public class UtilisateurController {
                 .body(this.utilisateurService.getUtilisateurs());
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping(path = "/get/{idUtilisateur}")
     public ResponseEntity <Utilisateur> getUtilisateur (@PathVariable int idUtilisateur){
         return ResponseEntity
                 .status(200)
                 .body(this.utilisateurService.getUtilisateur(idUtilisateur));
     }
 
-    @PutMapping (path = "/update/{id}")
+    @PutMapping (path = "/update/{idUtilisateur}")
     public ResponseEntity<String> updateUtilisateur(@PathVariable int idUtilisateur, @RequestBody Utilisateur utilisateur){
         this.utilisateurService.updateUtilisateur(idUtilisateur, utilisateur);
         return ResponseEntity
@@ -49,7 +50,7 @@ public class UtilisateurController {
                 .body("Utilisateur mis a jour avec succes !");
     }
 
-    @DeleteMapping (path = "/delete/{id}")
+    @DeleteMapping (path = "/delete/{idUtilisateur}")
     public ResponseEntity <String> deleteUtilisateur (@PathVariable int idUtilisateur){
         this.utilisateurService.deleteUtilisateur(idUtilisateur);
         return ResponseEntity

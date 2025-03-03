@@ -32,8 +32,10 @@ public class Profil implements Serializable {
     private String zoneGeographique ;
 
     @OneToOne
+    @JoinColumn (name = "idUtilisateur")
     private Utilisateur utilisateur;
 
     @ManyToOne
+    @JoinColumn (name = "idRole")
     private Role role;
 }
