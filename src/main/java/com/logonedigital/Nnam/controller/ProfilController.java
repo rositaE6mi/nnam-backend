@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ProfilController {
 
+
     private final ProfilService profilService;
 
     public ProfilController(ProfilService profilService) {
@@ -20,11 +21,9 @@ public class ProfilController {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<String> addProfil(@RequestBody Profil profil){
-        this.profilService.addProfil(profil);
-        return ResponseEntity
-                .status(201)
-                .body("Profil cree avec succes !");
+    public ResponseEntity<Profil> addProfil(@RequestBody Profil profil){
+        Profil saveProfil = profilService.save(profil);
+        return ResponseEntity.ok(saveProfil);
     }
 
     @GetMapping(path = "/get_All")
@@ -34,14 +33,14 @@ public class ProfilController {
                 .body(this.profilService.getProfil());
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping(path = "/get/{idProfil}")
     public ResponseEntity <Profil> getProfil (@PathVariable int idProfil){
         return ResponseEntity
                 .status(200)
                 .body(this.profilService.getProfil(idProfil));
     }
 
-    @PutMapping (path = "/update/{id}")
+    @PutMapping (path = "/update/{idProfil}")
     public ResponseEntity<String> updateProfil(@PathVariable int idProfil, @RequestBody Profil profil){
         this.profilService.updateProfil(idProfil, profil);
         return ResponseEntity
@@ -49,7 +48,7 @@ public class ProfilController {
                 .body("Profil mis a jour avec succes !");
     }
 
-    @DeleteMapping (path = "/delete/{id}")
+    @DeleteMapping (path = "/delete/{idProfil}")
     public ResponseEntity <String> deleteProfil (@PathVariable int idProfil){
         this.profilService.deleteProfil(idProfil);
         return ResponseEntity

@@ -11,4 +11,6 @@ public interface ProfilService {
         List<Profil> getProfil();
         void updateProfil (Integer idProfil, Profil profil);
         void deleteProfil (Integer idProfil);
+
+    Profil save(Profil profil);
 }
