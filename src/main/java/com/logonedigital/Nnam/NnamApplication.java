@@ -9,5 +9,4 @@ public class NnamApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(NnamApplication.class, args);
 	}
-]
 }
