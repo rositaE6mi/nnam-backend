@@ -15,6 +15,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -39,6 +40,9 @@ public class Livreur implements Serializable {
     private String prenom;
 
     private String telephone;
+
+    private Date createdAt;
+    private Date updatedAt;
 
 
     private List<Livreur> livreurs = new ArrayList<>();
