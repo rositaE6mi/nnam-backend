@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdministrationRepo extends JpaRepository<Administration, Integer> {
+    Administration findByNom(String nom);
 }
