@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,23 +27,37 @@ public class Utilisateur implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUtilisateur;
+
     @NotEmpty (message = "Please fill this")
     @NotNull ( message = "This field can't be null")
     private String nomUtilisateur;
+
+    @NotEmpty (message = "Please fill this")
+    @NotNull ( message = "This field can't be null")
     private String prenomUtilisateur;
+
     private String dateNaissance ;
     private String lieuNaissance ;
     private String VilleActuelle ;
     private String quartier ;
     private String boitePostale ;
+
     @Email (message = "email isn't correct!")
+    @NotEmpty (message = "Please fill this")
     private String email ;
+
     private Date dateDeCreation ;
     private Date dateDeModification ;
     private Boolean statut ;
 
     @ManyToOne
     @JoinColumn (name = "idRole")
+    @JsonIgnoreProperties("utilisateurs")// Evite la recursivite infinie
     private Role role;
+
+    @OneToOne( mappedBy = "utilisateur")
+    @JsonIgnoreProperties("utilisateurs")
+    private Profil profil;
+
 
 }

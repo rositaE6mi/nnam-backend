@@ -1,13 +1,15 @@
 package com.logonedigital.Nnam.services.utilisateur;
 
+import com.logonedigital.Nnam.dto.UtilisateurDTO;
 import com.logonedigital.Nnam.entities.Utilisateur;
 
 import java.util.List;
 
 public interface UtilisateurService {
-    void addUtilisateur (Utilisateur utilisateur);
-    Utilisateur getUtilisateur (int idUtilisateur);
-    List <Utilisateur> getUtilisateurs();
-    void updateUtilisateur (Integer idUtilisateur, Utilisateur utilisateur);
-    void deleteUtilisateur (Integer idUtilisateur);
+    UtilisateurDTO addUtilisateur (UtilisateurDTO utilisateurDTO);
+    List<UtilisateurDTO> getAllUtilisateurs();
+    UtilisateurDTO getUtilisateurById(Integer id);
+    UtilisateurDTO updateUtilisateur(Integer id, UtilisateurDTO utilisateurDTO);
+    void deleteUtilisateur(Integer id);
+
 }

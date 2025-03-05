@@ -1,9 +1,9 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.UtilisateurDTO;
 import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.services.utilisateur.UtilisateurService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,37 +21,37 @@ public class UtilisateurController {
     }
 
     @PostMapping (path = "/add")
-    public ResponseEntity<String> addUtilisateur(@Valid @RequestBody Utilisateur utilisateur){
-        this.utilisateurService.addUtilisateur(utilisateur);
+    public ResponseEntity<String> addUtilisateur(@RequestBody @Valid UtilisateurDTO utilisateurDTO){
+        this.utilisateurService.addUtilisateur(utilisateurDTO);
         return ResponseEntity
                 .status(201)
                 .body("Utilisateur cree avec succes !");
     }
 
     @GetMapping(path = "/get_All")
-    public ResponseEntity<List<Utilisateur>> getUtilisateur(){
+    public ResponseEntity<List<UtilisateurDTO>> getUtilisateurs(){
         return ResponseEntity
                 .status(200)
-                .body(this.utilisateurService.getUtilisateurs());
+                .body(this.utilisateurService.getAllUtilisateurs());
     }
 
     @GetMapping(path = "/get/{idUtilisateur}")
-    public ResponseEntity <Utilisateur> getUtilisateur (@PathVariable int idUtilisateur){
+    public ResponseEntity <UtilisateurDTO> getUtilisateurById(@PathVariable Integer idUtilisateur){
         return ResponseEntity
                 .status(200)
-                .body(this.utilisateurService.getUtilisateur(idUtilisateur));
+                .body(this.utilisateurService.getUtilisateurById(idUtilisateur));
     }
 
     @PutMapping (path = "/update/{idUtilisateur}")
-    public ResponseEntity<String> updateUtilisateur(@PathVariable int idUtilisateur, @RequestBody Utilisateur utilisateur){
-        this.utilisateurService.updateUtilisateur(idUtilisateur, utilisateur);
+    public ResponseEntity<String> updateUtilisateur(@PathVariable Integer idUtilisateur,@Valid @RequestBody UtilisateurDTO utilisateurDTO){
+        this.utilisateurService.updateUtilisateur(idUtilisateur, utilisateurDTO);
         return ResponseEntity
                 .status(200)
                 .body("Utilisateur mis a jour avec succes !");
     }
 
     @DeleteMapping (path = "/delete/{idUtilisateur}")
-    public ResponseEntity <String> deleteUtilisateur (@PathVariable int idUtilisateur){
+    public ResponseEntity <String> deleteUtilisateur (@PathVariable Integer idUtilisateur){
         this.utilisateurService.deleteUtilisateur(idUtilisateur);
         return ResponseEntity
                 .status(200)
