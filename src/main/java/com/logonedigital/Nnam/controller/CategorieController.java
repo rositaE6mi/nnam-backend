@@ -1,60 +1,55 @@
 package com.logonedigital.Nnam.controller;
 
 import com.logonedigital.Nnam.entities.Categorie;
-import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.services.Categorie.CategorieService;
-import com.logonedigital.Nnam.services.Produit.ProduitService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/categories")
 public class CategorieController {
-    private final CategorieService categorieService;
 
-    public CategorieController(CategorieService categorieService) {
+    @Autowired
+    private CategorieService categorieService;
 
-        this.categorieService = categorieService ;
+    // Ajouter une catégorie
+    @PostMapping
+    public ResponseEntity<Categorie> addCategorie(@Valid @RequestBody Categorie categorie) {
+        Categorie savedCategorie = categorieService.addCategorie(categorie);
+        return ResponseEntity.status(201).body(savedCategorie);
     }
 
-    @PostMapping(path = "api/categorie/add")
-    public ResponseEntity<String> addCategorie(@Valid @RequestBody Categorie categorie) {
-        this.categorieService.addCategorie(categorie);
-        return ResponseEntity
-                .status(201)
-                .body("Created successfully !");
+    // Mettre à jour une catégorie
+    @PutMapping("/{id}")
+    public ResponseEntity<Categorie> updateCategorie(
+            @PathVariable int id,
+            @Valid @RequestBody Categorie categorie) {
+        Categorie updatedCategorie = categorieService.updateCategorie(id, categorie);
+        return ResponseEntity.status(200).body(updatedCategorie);
     }
 
-    @GetMapping(path = "api/categorie/get_all")
-    public ResponseEntity<List<Categorie>> getAllCategories(){
-        return ResponseEntity
-                .status(200)
-                .body(this.categorieService.getAllCategories());
+    // Supprimer une catégorie
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategorie(@PathVariable int id) {
+        categorieService.deleteCategorie(id);
+        return ResponseEntity.status(204).build();
     }
 
-    @GetMapping(path = "api/categorie/get_by_id/{id}")
-    public ResponseEntity<Categorie> getCategorieById(@Parameter(description = "ID de categorie")@PathVariable Integer id) {
-        return ResponseEntity
-                .status(200)
-                .body(this.categorieService.getCategorieById(id));
+    // Récupérer une catégorie par son ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Categorie> getCategorie(@PathVariable int id) {
+        Categorie categorie = categorieService.getCategorie(id);
+        return ResponseEntity.status(200).body(categorie);
     }
 
-    @PutMapping(path = "api/categorie/update_by_id/{id}")
-    public ResponseEntity<String> updateCategorie(@PathVariable Integer id, @RequestBody Categorie categorie) {
-        return ResponseEntity
-                .status(202)
-                .body("Update successfully");
+    // Récupérer toutes les catégories
+    @GetMapping
+    public ResponseEntity<List<Categorie>> getAllCategories() {
+        List<Categorie> categories = categorieService.getAllCategories();
+        return ResponseEntity.status(200).body(categories);
     }
-
-    @DeleteMapping(path = "api/categorie/delete_by_id/{id}")
-    public ResponseEntity<String> deleteCategorie(@Parameter(description = "ID de categorie") @PathVariable Integer id) {
-        return ResponseEntity
-                .status(202)
-                .body("Delete successfully");
-    }
-
 }
