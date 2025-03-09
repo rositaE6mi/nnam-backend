@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,18 +25,19 @@ public class Profil implements Serializable {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private Integer idProfil ;
+
     @NotEmpty(message = "Please fill this")
     @NotNull( message = "This field can't be null")
-    private String nomProfil ;
-    @Lob //champ volumineux
-    private String photoBase64; // Stocke l'image en base 64, facile a recuperer et afficher dans une API mais prend plus d'espace en base qu'un simple chemin
+    private String nomProfil;
     private String zoneGeographique ;
 
     @OneToOne
     @JoinColumn (name = "idUtilisateur")
+    @JsonIgnoreProperties("profil")
     private Utilisateur utilisateur;
 
     @ManyToOne
     @JoinColumn (name = "idRole")
+    @JsonIgnoreProperties("profils")
     private Role role;
 }
