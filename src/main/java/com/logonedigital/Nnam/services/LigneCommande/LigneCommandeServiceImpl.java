@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.LigneCommande;
 
+import com.logonedigital.Nnam.dto.LigneCommandeDTO;
 import com.logonedigital.Nnam.entities.LigneCommande;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.LigneCommandeRepo;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LigneCommandeServiceImpl implements LigneCommandeService {
@@ -26,14 +28,28 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
 
     // 📌 Obtenir une ligne de commande par ID
     @Override
-    public Optional<LigneCommande> obtenirLigneCommandeParId(Integer id) {
-        return ligneCommandeRepo.findById(id);
+    public Optional<LigneCommandeDTO> obtenirLigneCommandeParId(Integer id) {
+        return ligneCommandeRepo.findById(id)
+                .map(ligneCommande -> new LigneCommandeDTO(
+                        ligneCommande.getLigneId(),
+                        ligneCommande.getQuantite(),
+                        ligneCommande.getPrixUnitaire(),
+                        ligneCommande.getTotalLigne()
+                )); // ✅ Retourne bien un Optional<LigneCommandeDTO>
     }
+
 
     // 📌 Lister toutes les lignes de commande
     @Override
-    public List<LigneCommande> listerToutesLesLignesCommandes() {
-        return ligneCommandeRepo.findAll();
+    public List<LigneCommandeDTO> listerToutesLesLignesCommandes() {
+
+        return ligneCommandeRepo.findAll()
+                .stream().map(LigneCommande -> new LigneCommandeDTO(
+                        LigneCommande.getLigneId(),
+                        LigneCommande.getQuantite(),
+                        LigneCommande.getPrixUnitaire(),
+                        LigneCommande.getTotalLigne()))
+                .collect(Collectors.toList());
     }
 
     // 📌 Mettre à jour une ligne de commande

@@ -1,8 +1,10 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.LigneCommandeDTO;
 import com.logonedigital.Nnam.entities.LigneCommande;
 import com.logonedigital.Nnam.services.LigneCommande.LigneCommandeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/lignes-commandes")
+@Validated // Optionnel : permet d'activer la validation sur toute la classe
 public class LigneCommandeController {
 
     private final LigneCommandeService ligneCommandeService;
@@ -27,16 +30,16 @@ public class LigneCommandeController {
 
     // 📌 Obtenir une ligne de commande par ID
     @GetMapping("/{id}")
-    public ResponseEntity<LigneCommande> obtenirLigneCommandeParId(@PathVariable Integer id) {
-        Optional<LigneCommande> ligneCommande = ligneCommandeService.obtenirLigneCommandeParId(id);
+    public ResponseEntity<LigneCommandeDTO> obtenirLigneCommandeParId(@PathVariable Integer id) {
+        Optional<LigneCommandeDTO> ligneCommande = ligneCommandeService.obtenirLigneCommandeParId(id);
         return ligneCommande.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // 📌 Lister toutes les lignes de commande
     @GetMapping
-    public ResponseEntity<List<LigneCommande>> listerToutesLesLignesCommandes() {
-        List<LigneCommande> lignes = ligneCommandeService.listerToutesLesLignesCommandes();
+    public ResponseEntity<List<LigneCommandeDTO>> listerToutesLesLignesCommandes() {
+        List<LigneCommandeDTO> lignes = ligneCommandeService.listerToutesLesLignesCommandes();
         return lignes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(lignes);
     }
 

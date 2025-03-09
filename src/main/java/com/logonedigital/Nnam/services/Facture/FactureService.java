@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.Facture;
 
+import com.logonedigital.Nnam.dto.FactureDTO;
 import com.logonedigital.Nnam.entities.Facture;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,10 @@ public interface FactureService {
     Facture addfacture(Facture facture);
 
     // 📌 Obtenir une facture par ID
-    Optional<Facture> getFacture(Integer id);
+    Optional<FactureDTO> getFacture(Integer id);
 
     // 📌 Lister toutes les factures
-    List<Facture> ListerFactures();
+    List<FactureDTO> ListerFactures();
 
     // 📌 Mettre à jour une facture
     Facture Updatefacture(Integer id, Facture facture);

@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.LigneCommande;
 
+import com.logonedigital.Nnam.dto.LigneCommandeDTO;
 import com.logonedigital.Nnam.entities.LigneCommande;
 
 import java.util.List;
@@ -10,10 +11,10 @@ public interface LigneCommandeService {
     LigneCommande ajouterLigneCommande(LigneCommande ligneCommande);
 
     // 📌 Obtenir une ligne de commande par ID
-    Optional<LigneCommande> obtenirLigneCommandeParId(Integer id);
+    Optional<LigneCommandeDTO> obtenirLigneCommandeParId(Integer id);
 
     // 📌 Lister toutes les lignes de commande
-    List<LigneCommande> listerToutesLesLignesCommandes();
+    List<LigneCommandeDTO> listerToutesLesLignesCommandes();
 
     // 📌 Mettre à jour une ligne de commande
     LigneCommande mettreAJourLigneCommande(Integer id, LigneCommande ligneCommande);

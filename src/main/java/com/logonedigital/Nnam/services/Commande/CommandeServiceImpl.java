@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.Commande;
 
+import com.logonedigital.Nnam.dto.CommandeDTO;
 import com.logonedigital.Nnam.entities.Commande;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommandeServiceImpl implements CommandeService {
@@ -55,13 +57,26 @@ public class CommandeServiceImpl implements CommandeService {
 
         // 📌 Obtenir une commande par ID
         @Override
-        public Commande getCommande (Integer commandeId){
-            return this.commandeRepo.findById(commandeId)
+        public CommandeDTO getCommandeDTO(Integer commandeId) {
+            // Récupérer la commande
+            Commande commande = this.commandeRepo.findById(commandeId)
                     .orElseThrow(() -> new ResourceNotFoundException("Commande non trouvée !"));
+
+            // Mapper la Commande en CommandeDTO
+
+            // Retourner le DTO
+            return new CommandeDTO(
+                    commande.getCommandeId(),
+                    commande.getReference(),
+                    commande.getDateCommande(),
+                    commande.getStatus(),
+                    commande.getTotal()
+            );
         }
 
 
-            // 📌 Supprimer une commande
+
+    // 📌 Supprimer une commande
             @Override
             public boolean DeleteCommande (Integer commandeId){
                 if (commandeRepo.existsById(commandeId)) {
@@ -74,11 +89,19 @@ public class CommandeServiceImpl implements CommandeService {
 
             // 📌 Lister toutes les commandes
             @Override
-            public List<Commande> listerCommandes () {
-                return commandeRepo.findAll();
+            public List<CommandeDTO> listerCommandes() {
+                return commandeRepo.findAll()
+                        .stream()
+                        .map(commande -> new CommandeDTO( // ✅ Conversion correcte
+                                commande.getCommandeId(),
+                                commande.getReference(),
+                                commande.getDateCommande(),
+                                commande.getStatus(),
+                                commande.getTotal()
+                        ))
+                        .collect(Collectors.toList()); // ✅ Retourne une List<CommandeDTO>
+
             }
-
-
 
 
 }
