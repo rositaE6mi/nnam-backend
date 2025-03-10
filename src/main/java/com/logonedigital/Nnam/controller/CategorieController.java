@@ -1,13 +1,12 @@
 package com.logonedigital.Nnam.controller;
 
-import com.logonedigital.Nnam.dto.CategorieReqDTO;
-import com.logonedigital.Nnam.dto.CategorieResDTO;
+import com.logonedigital.Nnam.dto.categorie.CategorieReqDTO;
+import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.CategorieMapper;
 import com.logonedigital.Nnam.services.Categorie.CategorieService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

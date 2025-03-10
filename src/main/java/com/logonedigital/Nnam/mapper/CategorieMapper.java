@@ -1,9 +1,8 @@
 package com.logonedigital.Nnam.mapper;
 
-import com.logonedigital.Nnam.dto.CategorieReqDTO;
-import com.logonedigital.Nnam.dto.CategorieResDTO;
+import com.logonedigital.Nnam.dto.categorie.CategorieReqDTO;
+import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
-import jakarta.persistence.Column;
 import org.mapstruct.Mapper;
 import org.springframework.context.annotation.Configuration;
 

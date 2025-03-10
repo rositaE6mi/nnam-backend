@@ -1,10 +1,8 @@
-package com.logonedigital.Nnam.dto;
+package com.logonedigital.Nnam.dto.categorie;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
