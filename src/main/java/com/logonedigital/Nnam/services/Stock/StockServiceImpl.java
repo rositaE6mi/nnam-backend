@@ -58,6 +58,14 @@ public class StockServiceImpl implements StockService{
     public boolean existsById(int id) {
         return stockRepository.existsById(id);
     }
+
+    @Override
+    public List<Stock> searchStocks(String nom, Integer minQuantite, Integer maxQuantite) {
+        if (nom != null && minQuantite != null && maxQuantite != null){
+            return stockRepository.findByNomContainingAndMinQuantiteBetween(nom, minQuantite,maxQuantite);
+        }
+        return stockRepository.findAll();
+    }
    /* private final StockRepo stockRepo;
 
     public StockServiceImpl(StockRepo stockRepo){

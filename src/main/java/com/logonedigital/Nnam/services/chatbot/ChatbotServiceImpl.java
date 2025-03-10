@@ -40,7 +40,7 @@ public class ChatbotServiceImpl implements ChatbotService {
                 List<Produit> produits = produitService.search(
                         params.get("nom"),
                         params.containsKey("prixMin") ? Double.parseDouble(params.get("prixMin")) : null,
-                        params.containsKey("prixMax") ? Double.parseDouble(params.get("prixMax")) : null,
+                        params.containsKey("prixMax") ? Double.parseDouble(params.get("prixMax")) : null
                         // ... autres paramètres
                 );
                 response.setData(produits);

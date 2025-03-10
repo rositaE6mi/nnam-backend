@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.services.Stock.StockService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,6 +52,14 @@ public class StockControler {
         return ResponseEntity
                 .status(200)
                 .body(stock);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Stock>> searchStocks(
+            @RequestParam(required = false) String nom,
+            @RequestParam(required = false) int minQuantite,
+            @RequestParam(required = false) int maxQuantite){
+        return ResponseEntity.ok(stockService.searchStocks(nom, minQuantite, maxQuantite));
     }
 
 }

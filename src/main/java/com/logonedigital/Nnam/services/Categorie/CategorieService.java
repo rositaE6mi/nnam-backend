@@ -16,4 +16,6 @@ public interface CategorieService {
     boolean existsById(int idCat);
 
     boolean existsByNomCat(@NotBlank(message = "Le nom de la categorie est obligatoire") String nomCat);
+
+    List<Categorie> searchCategories(String nomCat, String description, Integer minProduits);
 }

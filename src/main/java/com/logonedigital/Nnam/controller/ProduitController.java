@@ -1,5 +1,7 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.produit.ProduitReqDTO;
+import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.services.Produit.ProduitService;
 import jakarta.validation.Valid;
@@ -21,8 +23,8 @@ public class ProduitController {
     private ProduitService produitService;
 
     @PostMapping("/add")
-    public ResponseEntity<Produit> addProduit(@Valid @RequestBody Produit produit) {
-        Produit savedProduit = produitService.addProduit(produit);
+    public ResponseEntity<Produit> addProduit(@Valid @RequestBody ProduitReqDTO produitReqDTO) {
+        Produit savedProduit = produitService.addProduit(produitReqDTO);
         return ResponseEntity.status(201).body(savedProduit);
     }
 

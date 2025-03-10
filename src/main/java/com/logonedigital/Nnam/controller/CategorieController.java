@@ -3,6 +3,7 @@ package com.logonedigital.Nnam.controller;
 import com.logonedigital.Nnam.dto.categorie.CategorieReqDTO;
 import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
+import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.CategorieMapper;
 import com.logonedigital.Nnam.services.Categorie.CategorieService;
@@ -74,4 +75,13 @@ public class CategorieController {
         List<Categorie> categories = categorieService.getAllCategories();
         return ResponseEntity.status(200).body(categories);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Categorie>> searchCategories(
+            @RequestParam(required = false) String nomCat,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false, defaultValue = "0") Integer minProduits){
+        return ResponseEntity.ok(categorieService.searchCategories(nomCat, description, minProduits));
+    }
+
 }

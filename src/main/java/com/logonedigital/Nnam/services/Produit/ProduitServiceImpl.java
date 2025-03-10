@@ -1,8 +1,11 @@
 package com.logonedigital.Nnam.services.Produit;
 
+import com.logonedigital.Nnam.dto.produit.ProduitReqDTO;
+import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.ProduitMapper;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import com.logonedigital.Nnam.repository.ProduitRepo;
 import com.logonedigital.Nnam.repository.StockRepo;
@@ -24,13 +27,20 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Autowired
     private StockRepo stockRepository;
+    @Autowired
+    private ProduitMapper produitMapper;
 
     @Override
-    public Produit addProduit(Produit produit) {
+    public Produit addProduit(ProduitReqDTO produitReqDTO) {
         // Vérifiez que la catégorie existe
-        Categorie categorie = categorieRepository.findById(produit.getCategorie().getIdCat())
-                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produit.getCategorie().getIdCat()));
+        Categorie categorie = categorieRepository.findById(produitReqDTO.getCategorieId())
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produitReqDTO.getCategorieId() ));
 
+        Produit produit = produitMapper.getProduitFromProduitReqDTO(produitReqDTO);
+        produit.setCategorie(categorie);
+        produit.setStock(stockRepository.save(produit.getStock()));//composition stricte
+
+/*
         // Vérifiez que le stock est fourni
         if (produit.getStock() == null) {
             throw new ResourceNotFoundException("Le stock est obligatoire pour créer un produit.");
@@ -39,7 +49,7 @@ public class ProduitServiceImpl implements ProduitService {
         // Associez la catégorie et le stock au produit
         produit.setCategorie(categorie);
         produit.setStock(stockRepository.save(produit.getStock())); // Sauvegardez le stock
-
+*/
         // Sauvegardez le produit
         return produitRepository.save(produit);
     }

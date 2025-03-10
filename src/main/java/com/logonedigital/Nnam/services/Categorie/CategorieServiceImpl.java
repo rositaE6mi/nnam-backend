@@ -60,4 +60,16 @@ public class CategorieServiceImpl implements CategorieService {
     public boolean existsByNomCat(String nomCat) {
         return false;
     }
+
+    @Override
+    public List<Categorie> searchCategories(String nomCat, String description, Integer minProduits) {
+       /* if (nomCat != null && description != null){
+            return categorieRepository.findByNomCatContainingAndDescriptionContainingAndProduitsSizeGreaterThanEqual(nomCat, description, minProduits);
+        }*/
+        return categorieRepository.findByNomCatContainingAndDescriptionContainingAndProduitsSizeGreaterThanEqual(
+                nomCat,
+                description,
+                minProduits
+        );
+    }
 }
