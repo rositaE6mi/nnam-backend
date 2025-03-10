@@ -2,12 +2,13 @@ package com.logonedigital.Nnam.services.Produit;
 
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Produit;
-import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import com.logonedigital.Nnam.repository.ProduitRepo;
 import com.logonedigital.Nnam.repository.StockRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -88,4 +89,19 @@ public class ProduitServiceImpl implements ProduitService {
     public List<Produit> getAllProduits() {
         return produitRepository.findAll();
     }
+
+    @Override
+    public Page<Produit> getAllProduits(Pageable pageable){
+        return produitRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Produit> search(String nom, Double minPrice, Double maxPrice) {
+        if (nom != null && minPrice != null){
+            return produitRepository.findByNomProduitContainingAndPrixUBetween(nom, minPrice, maxPrice);
+        }
+        return produitRepository.findAll();
+    }
+
+
 }

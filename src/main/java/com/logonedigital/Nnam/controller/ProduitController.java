@@ -4,6 +4,10 @@ import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.services.Produit.ProduitService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,4 +49,23 @@ public class ProduitController {
         List<Produit> produits = produitService.getAllProduits();
         return ResponseEntity.status(200).body(produits);
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<Produit>> searchProduits(
+            @RequestParam(required = false) String nom,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+
+        return ResponseEntity.ok(produitService.search(nom, minPrice, maxPrice));
+    }
+
+    @GetMapping("pagination et tri/get_all")
+    public ResponseEntity<Page<Produit>> getAllProduits(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nomProduit") String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return ResponseEntity.ok(produitService.getAllProduits(pageable));
+    }
+
 }

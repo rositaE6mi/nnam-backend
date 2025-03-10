@@ -55,4 +55,9 @@ public class CategorieServiceImpl implements CategorieService {
     public boolean existsById(int idCat) {
         return categorieRepository.existsById(idCat);
     }
+
+    @Override
+    public boolean existsByNomCat(String nomCat) {
+        return false;
+    }
 }

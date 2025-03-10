@@ -1,6 +1,10 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.CategorieReqDTO;
+import com.logonedigital.Nnam.dto.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
+import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.CategorieMapper;
 import com.logonedigital.Nnam.services.Categorie.CategorieService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +17,33 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategorieController {
 
-    @Autowired
-    private CategorieService categorieService;
+
+    private final CategorieService categorieService;
+    private final CategorieMapper categorieMapper;
+
+    public CategorieController(CategorieService categorieService, CategorieMapper categorieMapper) {
+        this.categorieService = categorieService;
+        this.categorieMapper = categorieMapper;
+    }
 
     // Ajouter une catégorie
     @PostMapping
-    public ResponseEntity<Categorie> addCategorie(@Valid @RequestBody Categorie categorie) {
+    public ResponseEntity<CategorieResDTO> addCategorie(@Valid @RequestBody CategorieReqDTO categorieReqDTO) {
+        //verifions l'existence du nom
+        if (categorieService.existsByNomCat(categorieReqDTO.getNomCat())){
+            throw new ResourceNotFoundException("Cette categorie existe deja");
+        }
+
+        //conversion DTO -> Entity
+        Categorie categorie = categorieMapper.getCategorieFromCategorieReqDTO(categorieReqDTO);
+        //sauvegarde
         Categorie savedCategorie = categorieService.addCategorie(categorie);
-        return ResponseEntity.status(201).body(savedCategorie);
+        //conversion entity->DTO
+        CategorieResDTO response = categorieMapper.getCategorieResDTOFromCategorie(savedCategorie);
+
+        return ResponseEntity
+                .status(201).
+                body(response);
     }
 
     // Mettre à jour une catégorie
