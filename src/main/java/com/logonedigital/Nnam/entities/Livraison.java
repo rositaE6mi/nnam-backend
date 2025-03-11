@@ -47,6 +47,6 @@ public class Livraison implements Serializable {
 
 
 
-    @ManyToOne
-    private List<Livraison> livraisons = new ArrayList<>();
+//    @ManyToOne
+//    private List<Livraison> livraisons = new ArrayList<>();
 }
