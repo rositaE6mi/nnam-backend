@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.role;
 
+import com.logonedigital.Nnam.Mapper.RoleMapper;
 import com.logonedigital.Nnam.dto.RoleDTO;
 import com.logonedigital.Nnam.entities.Role;
 import com.logonedigital.Nnam.exception.ResourceExistException;
@@ -14,9 +15,11 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService{
 
     private final RoleRepo roleRepo;
+    private RoleMapper roleMapper;
 
-    public RoleServiceImpl(RoleRepo roleRepo) {
+    public RoleServiceImpl(RoleRepo roleRepo,RoleMapper roleMapper) {
         this.roleRepo = roleRepo;
+        this.roleMapper = roleMapper;
 
     }
 
@@ -41,14 +44,9 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public List<RoleDTO> getAllRoles() {
-        return roleRepo.findAll().stream().map(role ->{
-            RoleDTO dto = new RoleDTO();
-            dto.setIdRole(role.getIdRole());
-            dto.setNomRole(role.getNomRole());
-            return dto;
-        }).collect(Collectors.toList());
+        List<Role> role = this.roleRepo.findAll();
+        return this.roleMapper.toRoleDTOList(role);
     }
-
     @Override
     public RoleDTO getRoleById(Integer idRole) {
         Role role = roleRepo.findById(idRole)

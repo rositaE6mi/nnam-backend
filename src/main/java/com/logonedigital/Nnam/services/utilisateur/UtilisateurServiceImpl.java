@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.utilisateur;
 
+import com.logonedigital.Nnam.Mapper.UtilisateurMapper;
 import com.logonedigital.Nnam.dto.UtilisateurDTO;
 import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
     private final UtilisateurRepo utilisateurRepo;
+    private UtilisateurMapper utilisateurMapper;
 
-    public UtilisateurServiceImpl (UtilisateurRepo utilisateurRepo){
+    public UtilisateurServiceImpl (UtilisateurRepo utilisateurRepo , UtilisateurMapper utilisateurMapper){
         this.utilisateurRepo = utilisateurRepo;
+        this.utilisateurMapper = utilisateurMapper;
     }
 
 
@@ -46,14 +49,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     @Override
     public List<UtilisateurDTO> getAllUtilisateurs() {
         List<Utilisateur> utilisateurs = utilisateurRepo.findAll();
-        return utilisateurs.stream().map(utilisateur -> {
-            UtilisateurDTO dto = new UtilisateurDTO();
-            dto.setIdUtilisateur(utilisateur.getIdUtilisateur());
-            dto.setNomUtilisateur(utilisateur.getNomUtilisateur());
-            dto.setEmail(utilisateur.getEmail());
-            return dto;
-        }).collect(Collectors.toList());
-
+      return this.utilisateurMapper.toEmployeDtoList(utilisateurs);
     }
 
     @Override

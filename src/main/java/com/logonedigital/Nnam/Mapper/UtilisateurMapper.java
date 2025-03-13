@@ -15,7 +15,7 @@ public interface UtilisateurMapper {
 
     UtilisateurDTO toDTO (Utilisateur utilisateur);
 
-    List <UtilisateurDTO> toDtoList(List<Utilisateur> utilisateurs);
+    List <UtilisateurDTO> toEmployeDtoList(List<Utilisateur> utilisateurs);
 
 
 }
