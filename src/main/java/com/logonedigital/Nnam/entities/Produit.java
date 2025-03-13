@@ -32,7 +32,6 @@ public class Produit {
     private String description;
 
     @Column(nullable = false)
-    @NotEmpty(message = "please fill this")
     @NotNull(message = "this fill couldn't be!")
     private double prixU;
 

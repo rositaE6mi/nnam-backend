@@ -60,11 +60,11 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
-    public List<Stock> searchStocks(String nom, Integer minQuantite, Integer maxQuantite) {
-        if (nom != null && minQuantite != null && maxQuantite != null){
-            return stockRepository.findByNomContainingAndMinQuantiteBetween(nom, minQuantite,maxQuantite);
-        }
-        return stockRepository.findAll();
+    public List<Stock> searchStocks(String nom, Integer minQuantiteStock, Integer maxQuantiteStock) {
+      /*  if (nom != null && minQuantiteStock != null && maxQuantiteStock != null){
+            return stockRepository.findByNomContainingAndMinQuantiteStockBetween(nom, minQuantiteStock,maxQuantiteStock);
+        }*/
+        return stockRepository.findByNomContainingAndQuantiteStockBetween(nom, minQuantiteStock, maxQuantiteStock);
     }
    /* private final StockRepo stockRepo;
 

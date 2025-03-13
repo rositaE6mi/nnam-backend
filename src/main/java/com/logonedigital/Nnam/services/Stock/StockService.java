@@ -14,5 +14,5 @@ public interface StockService {
 
     boolean existsById(int id);
 
-    List<Stock> searchStocks(String nom, Integer minQuantite, Integer maxQuantite);
+    List<Stock> searchStocks(String nom, Integer minQuantiteStock, Integer maxQuantiteStock);
 }

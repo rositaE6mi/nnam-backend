@@ -23,7 +23,7 @@ public class Stock {
     @NotEmpty(message = "please fill this")
     @NotNull(message = "this fill couldn't be!")
     private String nom;
-    @NotEmpty(message = "please fill this")
+
     @NotNull(message = "this fill couldn't be!")
     @Column(nullable = false)
     private int quantiteStock;

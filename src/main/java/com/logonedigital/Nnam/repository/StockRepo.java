@@ -10,5 +10,5 @@ import java.util.List;
 public interface StockRepo extends JpaRepository<Stock, Integer> {
     boolean existsByNom(String nom);
 
-    List<Stock> findByNomContainingAndMinQuantiteBetween(String nom, Integer minQuantite, Integer maxQuantite);
+    List<Stock> findByNomContainingAndQuantiteStockBetween(String nom, Integer minQuantiteStock, Integer maxQuantiteStock);
 }

@@ -4,6 +4,7 @@ import com.logonedigital.Nnam.dto.produit.ProduitReqDTO;
 import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Produit;
+import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.ProduitMapper;
 import com.logonedigital.Nnam.repository.CategorieRepo;
@@ -36,9 +37,17 @@ public class ProduitServiceImpl implements ProduitService {
         Categorie categorie = categorieRepository.findById(produitReqDTO.getCategorieId())
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produitReqDTO.getCategorieId() ));
 
+        //creons le stock
+        Stock stock = new Stock();
+        stock.setNom(produitReqDTO.getStock().getNom());
+        stock.setQuantiteStock(produitReqDTO.getStock().getQuantiteStock());
+        Stock savedStock = stockRepository.save(stock);
+        //creons le produit
         Produit produit = produitMapper.getProduitFromProduitReqDTO(produitReqDTO);
         produit.setCategorie(categorie);
-        produit.setStock(stockRepository.save(produit.getStock()));//composition stricte
+        produit.setStock(savedStock);
+
+        return produitRepository.save(produit);
 
 /*
         // Vérifiez que le stock est fourni
@@ -51,7 +60,7 @@ public class ProduitServiceImpl implements ProduitService {
         produit.setStock(stockRepository.save(produit.getStock())); // Sauvegardez le stock
 */
         // Sauvegardez le produit
-        return produitRepository.save(produit);
+       // return produitRepository.save(produit);
     }
 
     @Override

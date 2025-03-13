@@ -57,9 +57,9 @@ public class StockControler {
     @GetMapping("/search")
     public ResponseEntity<List<Stock>> searchStocks(
             @RequestParam(required = false) String nom,
-            @RequestParam(required = false) int minQuantite,
-            @RequestParam(required = false) int maxQuantite){
-        return ResponseEntity.ok(stockService.searchStocks(nom, minQuantite, maxQuantite));
+            @RequestParam(required = false) Integer minQuantiteStock,
+            @RequestParam(required = false) Integer maxQuantiteStock){
+        return ResponseEntity.ok(stockService.searchStocks(nom, minQuantiteStock, maxQuantiteStock));
     }
 
 }
