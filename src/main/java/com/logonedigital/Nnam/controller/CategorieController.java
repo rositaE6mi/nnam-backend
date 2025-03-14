@@ -4,6 +4,7 @@ import com.logonedigital.Nnam.dto.categorie.CategorieReqDTO;
 import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.entities.Produit;
+import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.CategorieMapper;
 import com.logonedigital.Nnam.services.Categorie.CategorieService;
@@ -31,16 +32,11 @@ public class CategorieController {
     public ResponseEntity<CategorieResDTO> addCategorie(@Valid @RequestBody CategorieReqDTO categorieReqDTO) {
         //verifions l'existence du nom
         if (categorieService.existsByNomCat(categorieReqDTO.getNomCat())){
-            throw new ResourceNotFoundException("Cette categorie existe deja");
+            throw new ResourceExistException("Cette categorie existe deja");
         }
+        Categorie savedCategorie = categorieService.addCategorie(categorieReqDTO);
 
-        //conversion DTO -> Entity
-        Categorie categorie = categorieMapper.getCategorieFromCategorieReqDTO(categorieReqDTO);
-        //sauvegarde
-        Categorie savedCategorie = categorieService.addCategorie(categorie);
-        //conversion entity->DTO
         CategorieResDTO response = categorieMapper.getCategorieResDTOFromCategorie(savedCategorie);
-
         return ResponseEntity
                 .status(201).
                 body(response);
@@ -64,15 +60,15 @@ public class CategorieController {
 
     // Récupérer une catégorie par son ID
     @GetMapping("/{id}")
-    public ResponseEntity<Categorie> getCategorie(@PathVariable int id) {
-        Categorie categorie = categorieService.getCategorie(id);
-        return ResponseEntity.status(200).body(categorie);
+    public ResponseEntity<CategorieResDTO> getCategorie(@PathVariable int id) {
+        CategorieResDTO categorieResDTO = categorieService.getCategorie(id);
+        return ResponseEntity.status(200).body(categorieResDTO);
     }
 
     // Récupérer toutes les catégories
     @GetMapping
-    public ResponseEntity<List<Categorie>> getAllCategories() {
-        List<Categorie> categories = categorieService.getAllCategories();
+    public ResponseEntity<List<CategorieResDTO>> getAllCategories() {
+        List<CategorieResDTO> categories = categorieService.getAllCategories();
         return ResponseEntity.status(200).body(categories);
     }
 
