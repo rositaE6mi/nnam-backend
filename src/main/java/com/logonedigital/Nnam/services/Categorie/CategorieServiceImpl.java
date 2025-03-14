@@ -62,11 +62,24 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     public List<CategorieResDTO> getAllCategories() {
         List<Categorie> categories = categorieRepository.findAll();
+       //Debug: Affichons les donnees de l'entite
+        categories.forEach(cat -> System.out.println("Entity -> ID: " + cat.getIdCat()
+                + ", Nom: " + cat.getNomCat()
+                + ", Desc: " + cat.getDescription()));
+
+        return categories.stream()
+                .map(cat -> {
+                    CategorieResDTO dto = categorieMapper.getCategorieResDTOFromCategorie(cat);
+                    System.out.println("DTO -> ID: " + dto.getIdCat()
+                            + ", Nom: " + dto.getNomCat()
+                            + ", Desc: " + dto.getDescription()); // Debug
+                    return dto;
+/*
         return categories.stream()
                 .map(cat -> {
                     CategorieResDTO dto = categorieMapper.getCategorieResDTOFromCategorie(cat);
                     return dto;
-                })
+                */})
                 .toList(); //Collections.singletonList(this.categorieMapper.getCategorieResDTOFromCategorie((Categorie) categorie));
     }
 
