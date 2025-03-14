@@ -31,18 +31,14 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             throw new ResourceExistException("Un utilisateur avec cet email existe déjà !");
         }
 
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
-        utilisateur.setEmail(utilisateurDTO.getEmail());
+        // Convertir le DTO en entité Utilisateur
+        Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDTO);
 
+        // Sauvegarde en base de données
         Utilisateur savedUtilisateur = utilisateurRepo.save(utilisateur);
 
-        UtilisateurDTO savedUtilisateurDTO = new UtilisateurDTO();
-        savedUtilisateurDTO.setIdUtilisateur(savedUtilisateur.getIdUtilisateur());
-        savedUtilisateurDTO.setNomUtilisateur(savedUtilisateur.getNomUtilisateur());
-        savedUtilisateurDTO.setEmail(savedUtilisateur.getEmail());
-
-        return savedUtilisateurDTO;
+        // Retourner l'entité sauvegardée sous forme de DTO
+        return utilisateurMapper.toDTO(savedUtilisateur);
 
     }
 
