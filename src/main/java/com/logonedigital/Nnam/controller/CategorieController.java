@@ -31,9 +31,9 @@ public class CategorieController {
     @PostMapping
     public ResponseEntity<CategorieResDTO> addCategorie(@Valid @RequestBody CategorieReqDTO categorieReqDTO) {
         //verifions l'existence du nom
-        if (categorieService.existsByNomCat(categorieReqDTO.getNomCat())){
+        /*if (categorieService.existsByNomCat(categorieReqDTO.getNomCat())){
             throw new ResourceExistException("Cette categorie existe deja");
-        }
+        }*/
         Categorie savedCategorie = categorieService.addCategorie(categorieReqDTO);
 
         CategorieResDTO response = categorieMapper.getCategorieResDTOFromCategorie(savedCategorie);

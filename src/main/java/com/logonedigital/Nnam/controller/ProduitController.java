@@ -41,8 +41,8 @@ public class ProduitController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Produit> getProduit(@PathVariable int id) {
-        Produit produit = produitService.getProduit(id);
+    public ResponseEntity<ProduitResDTO> getProduit(@PathVariable int id) {
+        ProduitResDTO produit = produitService.getProduit(id);
         return ResponseEntity.status(200).body(produit);
     }
 

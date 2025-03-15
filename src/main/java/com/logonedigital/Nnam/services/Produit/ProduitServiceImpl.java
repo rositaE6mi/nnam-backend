@@ -7,6 +7,7 @@ import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.ProduitMapper;
+import com.logonedigital.Nnam.mapper.StockMapper;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import com.logonedigital.Nnam.repository.ProduitRepo;
 import com.logonedigital.Nnam.repository.StockRepo;
@@ -30,6 +31,8 @@ public class ProduitServiceImpl implements ProduitService {
     private StockRepo stockRepository;
     @Autowired
     private ProduitMapper produitMapper;
+    @Autowired
+    private StockMapper stockMapper;
 
     @Override
     public Produit addProduit(ProduitReqDTO produitReqDTO) {
@@ -99,9 +102,12 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Override
-    public Produit getProduit(int idProduit) {
-        return produitRepository.findById(idProduit)
+    public ProduitResDTO getProduit(int idProduit) {
+        Produit produit = produitRepository.findById(idProduit)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé avec l'ID : " + idProduit));
+        ProduitResDTO dto = produitMapper.getProduitResDTOFromProduit(produit);
+        dto.setStock(stockMapper.toDTO(produit.getStock()));
+        return dto;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.logonedigital.Nnam.dto.produit;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.logonedigital.Nnam.dto.stock.StockResDTO;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +14,6 @@ public class ProduitResDTO {
     private String description;
     private double prixU;
     private LocalDate dateExpiration;
-    private String categorieNom;
-    private String stockNom;
+    private int categorieId;//pour eviter kes reference circulaires
+    private StockResDTO stock;//creation dun DTO pour stock
 }

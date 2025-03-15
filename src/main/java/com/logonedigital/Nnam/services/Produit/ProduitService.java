@@ -15,7 +15,7 @@ public interface ProduitService {
     //ProduitResDTO getProduit(int idProduit);
     Produit updateProduit(int id, Produit produit);
     void deleteProduit(int idProduit);
-    Produit getProduit(int idProduit);
+    ProduitResDTO getProduit(int idProduit);
     List<Produit> getAllProduits();
 
     Page<Produit> getAllProduits(Pageable pageable);

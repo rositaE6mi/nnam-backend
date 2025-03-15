@@ -6,6 +6,7 @@ import com.logonedigital.Nnam.entities.Categorie;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.CategorieMapper;
+import com.logonedigital.Nnam.mapper.ProduitMapper;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class CategorieServiceImpl implements CategorieService {
     private CategorieRepo categorieRepository;
     @Autowired
     private CategorieMapper categorieMapper;
+    @Autowired
+    private ProduitMapper produitMapper;
 
     @Override
     public Categorie addCategorie(CategorieReqDTO categorieReqDTO) {
@@ -62,6 +65,13 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     public List<CategorieResDTO> getAllCategories() {
         List<Categorie> categories = categorieRepository.findAll();
+        categories.forEach(cat -> System.out.println("Entité ->" +cat));
+        return categories.stream()
+                .map(categorieMapper::getCategorieResDTOFromCategorie)
+                .toList();
+    }
+    /*    public List<CategorieResDTO> getAllCategories() {
+        List<Categorie> categories = categorieRepository.findAll();
        //Debug: Affichons les donnees de l'entite
         categories.forEach(cat -> System.out.println("Entity -> ID: " + cat.getIdCat()
                 + ", Nom: " + cat.getNomCat()
@@ -74,15 +84,15 @@ public class CategorieServiceImpl implements CategorieService {
                             + ", Nom: " + dto.getNomCat()
                             + ", Desc: " + dto.getDescription()); // Debug
                     return dto;
-/*
+
         return categories.stream()
                 .map(cat -> {
                     CategorieResDTO dto = categorieMapper.getCategorieResDTOFromCategorie(cat);
                     return dto;
-                */})
+                })
                 .toList(); //Collections.singletonList(this.categorieMapper.getCategorieResDTOFromCategorie((Categorie) categorie));
     }
-
+*/
     @Override
     public boolean existsById(int idCat) {
         return categorieRepository.existsById(idCat);
