@@ -1,8 +1,10 @@
 package com.logonedigital.Nnam.controller;
 
 import com.logonedigital.Nnam.dto.CommandeDTO;
+import com.logonedigital.Nnam.dto.CommandeReqDTO;
 import com.logonedigital.Nnam.entities.Commande;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.MapperCommande;
 import com.logonedigital.Nnam.services.Commande.CommandeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/commandes")
@@ -21,12 +22,15 @@ public class CommandeController {
 
     @Autowired
     private CommandeService commandeService;
-    public CommandeController(CommandeService commandeService){
+    private final MapperCommande mapperCommande;
+    public CommandeController(CommandeService commandeService, MapperCommande mapperCommande){
         this.commandeService = commandeService;
+        this.mapperCommande = mapperCommande;
     }
     // 📌 Créer une nouvelle commande
     @PostMapping
-    public ResponseEntity<String> addCommande(@Valid @RequestBody Commande commande) {
+    public ResponseEntity<String> addCommande(@Valid @RequestBody CommandeReqDTO commandeReqDTO) {
+        Commande commande = mapperCommande.toEntity(commandeReqDTO);// 🔹 Convertir DTO → Entité
        this.commandeService.addCommande(commande);
         return ResponseEntity
                 .status(201)
@@ -41,8 +45,9 @@ public class CommandeController {
     }
     // 📌 Mettre à jour une commande (200 OK ou 404 Not Found)
     @PutMapping("/{id}")
-    public ResponseEntity<?> UpdateCommande(@PathVariable Integer id, @RequestBody Commande commande) {
+    public ResponseEntity<?> UpdateCommande(@PathVariable Integer id, @RequestBody CommandeReqDTO commandeReqDTO) {
         try {
+            Commande commande = mapperCommande.toEntity(commandeReqDTO);// 🔹 Convertir DTO → Entité
             commandeService.UpdateCommande(id, commande);
             return new ResponseEntity<>("Commande mise à jour avec succès", HttpStatus.OK); // Retourne 200 OK
         } catch (ResourceNotFoundException ex) {

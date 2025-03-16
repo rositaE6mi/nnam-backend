@@ -40,8 +40,9 @@ public class Commande implements Serializable {
     @Positive(message = "Le total doit être un nombre positif") // Vérifie que le total est positif
     private int total;
 
-    @OneToOne
+    @OneToOne(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Facture facture;
+
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore // Ignore cette relation lors de la sérialisation JSON

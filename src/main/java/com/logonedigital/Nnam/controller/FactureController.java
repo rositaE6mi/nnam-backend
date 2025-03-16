@@ -16,9 +16,10 @@ import java.util.Optional;
 @RequestMapping("/factures")
 @Validated // Optionnel : permet d'activer la validation sur toute la classe
 public class FactureController {
-    @Autowired
-    private FactureService factureService;
 
+    private final FactureService factureService;
+
+    @Autowired
     public FactureController(FactureService factureService) {
         this.factureService = factureService;
     }
@@ -56,7 +57,7 @@ public class FactureController {
         return ResponseEntity.ok(updateFacture);
 
     }
-    // 📌 Supprimer une facture
+
     // 📌 Supprimer une facture
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> DeleteFacture(@PathVariable("id") Integer id) {
