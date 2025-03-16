@@ -21,7 +21,7 @@ public class FactureServiceImpl implements FactureService {
     // 📌 Ajouter une facture
     @Override
     public Facture addfacture(Facture facture){
-        facture.setDateFacture(new Date());
+        facture.setDateFacturation(new Date());
         return factureRepo.save(facture);
  }
     // 📌 Obtenir une facture par ID
@@ -30,7 +30,7 @@ public class FactureServiceImpl implements FactureService {
         return factureRepo.findById(id)
                 .map(Facture -> new FactureDTO(
                         Facture.getFactureId(),
-                        Facture.getDateFacture(),
+                        Facture.getDateFacturation(),
                         Facture.getMontantTotal()
                 ));
     }
@@ -40,7 +40,7 @@ public class FactureServiceImpl implements FactureService {
         return factureRepo.findAll()
                 .stream().map(Facture -> new FactureDTO(
                         Facture.getFactureId(),
-                        Facture.getDateFacture(),
+                        Facture.getDateFacturation(),
                         Facture.getMontantTotal()
                         ))
                 .collect(Collectors.toList());
@@ -49,7 +49,7 @@ public class FactureServiceImpl implements FactureService {
     @Override
     public Facture Updatefacture(Integer id, Facture facture){
         return factureRepo.findById(id).map(existingFacture ->{
-            existingFacture.setDateFacture(facture.getDateFacture());
+            existingFacture.setDateFacturation(facture.getDateFacturation());
             existingFacture.setMontantTotal(facture.getMontantTotal());
             return factureRepo.save(existingFacture);
         }).orElseThrow(() -> new ResourceNotFoundException("Facture non trouvée avec ID : " + id));

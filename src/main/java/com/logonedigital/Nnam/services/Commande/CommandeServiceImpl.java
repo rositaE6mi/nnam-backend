@@ -2,9 +2,12 @@ package com.logonedigital.Nnam.services.Commande;
 
 import com.logonedigital.Nnam.dto.CommandeDTO;
 import com.logonedigital.Nnam.entities.Commande;
+import com.logonedigital.Nnam.entities.Facture;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.MapperCommande;
 import com.logonedigital.Nnam.repository.CommandeRepo;
+import com.logonedigital.Nnam.services.Facture.FactureService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,13 @@ import java.util.stream.Collectors;
 public class CommandeServiceImpl implements CommandeService {
 
     private final CommandeRepo commandeRepo;
+    private final FactureService factureService; // Injection du service Facture
+    private final MapperCommande mapperCommande;
 
-    public CommandeServiceImpl(CommandeRepo commandeRepo) {
+    public CommandeServiceImpl(CommandeRepo commandeRepo, FactureService factureService, MapperCommande mapperCommande) {
         this.commandeRepo = commandeRepo;
+        this.factureService = factureService;
+        this.mapperCommande = mapperCommande;
     }
 
 
@@ -34,7 +41,16 @@ public class CommandeServiceImpl implements CommandeService {
 
         commande.setCreatedAt(new Date());
         commande.setStatus("EN_COURS"); // Exemple de statut par défaut
-        this.commandeRepo.save(commande);
+       Commande savedCommande = this.commandeRepo.save(commande);
+
+        // ✅ Génération automatique de la facture après l'enregistrement de la commande
+        Facture facture = new Facture();
+        facture.setCommande(savedCommande);
+        facture.setMontantTotal(savedCommande.getTotal());
+        facture.setDateFacturation(new Date());
+        facture.setStatut("NON_PAYEE"); // Statut par défaut
+
+        factureService.addfacture(facture); // Appel du service pour sauvegarder la facture
     }
 
         // 📌 Mettre à jour une commande (Version avec `Optional`)
@@ -103,5 +119,8 @@ public class CommandeServiceImpl implements CommandeService {
 
             }
 
-
+    @Override
+    public Optional<Commande> getCommandeById(Integer id) {
+        return commandeRepo.findById(id);
+    }
 }

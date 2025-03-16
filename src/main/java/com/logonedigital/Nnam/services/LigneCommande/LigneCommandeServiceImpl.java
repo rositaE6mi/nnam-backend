@@ -1,8 +1,11 @@
 package com.logonedigital.Nnam.services.LigneCommande;
 
 import com.logonedigital.Nnam.dto.LigneCommandeDTO;
+import com.logonedigital.Nnam.dto.LigneCommandeReqDTO;
+import com.logonedigital.Nnam.entities.Commande;
 import com.logonedigital.Nnam.entities.LigneCommande;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.MapperLigneCommande;
 import com.logonedigital.Nnam.repository.LigneCommandeRepo;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +17,11 @@ import java.util.stream.Collectors;
 public class LigneCommandeServiceImpl implements LigneCommandeService {
 
     private final LigneCommandeRepo ligneCommandeRepo;
+    private final MapperLigneCommande mapperLigneCommande;
 
-    public LigneCommandeServiceImpl(LigneCommandeRepo ligneCommandeRepo) {
+    public LigneCommandeServiceImpl(LigneCommandeRepo ligneCommandeRepo, MapperLigneCommande mapperLigneCommande) {
         this.ligneCommandeRepo = ligneCommandeRepo;
+        this.mapperLigneCommande = mapperLigneCommande;
     }
 
     // 📌 Ajouter une ligne de commande
@@ -72,4 +77,5 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
         }
         return false;
     }
+
 }
