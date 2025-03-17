@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.utilisateur;
 
+import com.logonedigital.Nnam.Mapper.UtilisateurMapper;
 import com.logonedigital.Nnam.dto.UtilisateurDTO;
 import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
     private final UtilisateurRepo utilisateurRepo;
+    private UtilisateurMapper utilisateurMapper;
 
-    public UtilisateurServiceImpl (UtilisateurRepo utilisateurRepo){
+    public UtilisateurServiceImpl (UtilisateurRepo utilisateurRepo , UtilisateurMapper utilisateurMapper){
         this.utilisateurRepo = utilisateurRepo;
+        this.utilisateurMapper = utilisateurMapper;
     }
 
 
@@ -28,32 +31,21 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             throw new ResourceExistException("Un utilisateur avec cet email existe déjà !");
         }
 
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
-        utilisateur.setEmail(utilisateurDTO.getEmail());
+        // Convertir le DTO en entité Utilisateur
+        Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDTO);
 
+        // Sauvegarde en base de données
         Utilisateur savedUtilisateur = utilisateurRepo.save(utilisateur);
 
-        UtilisateurDTO savedUtilisateurDTO = new UtilisateurDTO();
-        savedUtilisateurDTO.setIdUtilisateur(savedUtilisateur.getIdUtilisateur());
-        savedUtilisateurDTO.setNomUtilisateur(savedUtilisateur.getNomUtilisateur());
-        savedUtilisateurDTO.setEmail(savedUtilisateur.getEmail());
-
-        return savedUtilisateurDTO;
+        // Retourner l'entité sauvegardée sous forme de DTO
+        return utilisateurMapper.toDTO(savedUtilisateur);
 
     }
 
     @Override
     public List<UtilisateurDTO> getAllUtilisateurs() {
         List<Utilisateur> utilisateurs = utilisateurRepo.findAll();
-        return utilisateurs.stream().map(utilisateur -> {
-            UtilisateurDTO dto = new UtilisateurDTO();
-            dto.setIdUtilisateur(utilisateur.getIdUtilisateur());
-            dto.setNomUtilisateur(utilisateur.getNomUtilisateur());
-            dto.setEmail(utilisateur.getEmail());
-            return dto;
-        }).collect(Collectors.toList());
-
+      return this.utilisateurMapper.toEmployeDtoList(utilisateurs);
     }
 
     @Override

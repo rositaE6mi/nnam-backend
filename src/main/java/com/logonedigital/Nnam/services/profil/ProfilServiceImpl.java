@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.profil;
 
+import com.logonedigital.Nnam.Mapper.ProfilMapper;
 import com.logonedigital.Nnam.dto.ProfilDTO;
 import com.logonedigital.Nnam.entities.Profil;
 import com.logonedigital.Nnam.exception.ResourceExistException;
@@ -13,9 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class ProfilServiceImpl implements ProfilService{
     private final ProfilRepo profilRepo;
+    private ProfilMapper profilMapper;
 
-    public ProfilServiceImpl (ProfilRepo profilRepo){
+
+    public ProfilServiceImpl (ProfilRepo profilRepo,ProfilMapper profilMapper){
         this.profilRepo = profilRepo;
+        this.profilMapper = profilMapper;
     }
 
 
@@ -30,26 +34,17 @@ public class ProfilServiceImpl implements ProfilService{
 
         Profil profil = new Profil();
         profil.setNomProfil(profilDTO.getNomProfil());
-
+        profil.setIdProfil(profil.getIdProfil());
         Profil savedProfil = profilRepo.save(profil);
 
-        ProfilDTO savedProfilDTO = new ProfilDTO();
-        savedProfilDTO.setIdProfil(savedProfil.getIdProfil());
-        savedProfilDTO.setNomProfil(savedProfil.getNomProfil());
-
-        return savedProfilDTO;
+        return this.profilMapper.toProfilDTO(savedProfil);
 
     }
 
     @Override
     public List<ProfilDTO> getAllProfils() {
         List<Profil> profils = profilRepo.findAll();
-        return profils.stream().map(profil -> {
-            ProfilDTO dto = new ProfilDTO();
-            dto.setIdProfil(profil.getIdProfil());
-            dto.setNomProfil(profil.getNomProfil());
-            return dto;
-        }).collect(Collectors.toList());
+        return this.profilMapper.toProfilDTOList(profils);
 
     }
 
