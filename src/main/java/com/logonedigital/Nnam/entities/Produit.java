@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.aspectj.bridge.Message;
 
+import java.time.LocalDate;
 import java.util.Date;
 //refaire les validations sur les entites
 @Data
@@ -19,21 +20,10 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProduit;
 
-
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be null")
     private String nomProduit;
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
     private String description;
-
-    @Column(nullable = false)
-    @NotNull(message = "this fill couldn't be!")
     private double prixU;
-
-    @Column(nullable = false)
-    @NotNull(message = "date couldn't be null")
-    private Date dateExpiration;
+    private LocalDate dateExpiration;
 
     @JsonBackReference
     @ManyToOne

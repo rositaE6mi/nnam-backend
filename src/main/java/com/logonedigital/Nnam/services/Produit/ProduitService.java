@@ -12,13 +12,16 @@ import java.util.List;
 
 public interface ProduitService {
     Produit addProduit(@Valid ProduitReqDTO produitReqDTO);
-    //ProduitResDTO getProduit(int idProduit);
-    Produit updateProduit(int id, Produit produit);
+
+    ProduitResDTO updateProduit(int id, ProduitReqDTO produitReqDTO);
+
     void deleteProduit(int idProduit);
     ProduitResDTO getProduit(int idProduit);
-    List<Produit> getAllProduits();
+    //List<Produit> getAllProduits();
 
-    Page<Produit> getAllProduits(Pageable pageable);
+    List<ProduitResDTO> getAllProduits(List<Produit> produits);
+
+    Page<Produit> getAllProduit(Pageable pageable);
 
     List<Produit> search(String nom, Double minPrice, Double maxPrice);
 }

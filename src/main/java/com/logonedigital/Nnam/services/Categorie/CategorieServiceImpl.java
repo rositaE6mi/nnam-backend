@@ -2,13 +2,17 @@ package com.logonedigital.Nnam.services.Categorie;
 
 import com.logonedigital.Nnam.dto.categorie.CategorieReqDTO;
 import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
+import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
+import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.CategorieMapper;
 import com.logonedigital.Nnam.mapper.ProduitMapper;
 import com.logonedigital.Nnam.repository.CategorieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -35,12 +39,13 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Override
-    public Categorie updateCategorie(int id, Categorie categorie) {
+    public CategorieResDTO updateCategorie(int id, CategorieReqDTO categorieReqDTO) {
         Categorie existingCategorie = categorieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + id));
-        existingCategorie.setNomCat(categorie.getNomCat());
-        existingCategorie.setDescription(categorie.getDescription());
-        return categorieRepository.save(existingCategorie);
+        existingCategorie.setNomCat(categorieReqDTO.getNomCat());
+        existingCategorie.setDescription(categorieReqDTO.getDescription());
+         categorieRepository.save(existingCategorie);
+        return categorieMapper.getCategorieResDTOFromCategorie(existingCategorie);
     }
 
     @Override
@@ -63,6 +68,11 @@ public class CategorieServiceImpl implements CategorieService {
 
 
     @Override
+    public List<CategorieResDTO> getAllCategories(List<Categorie> categories) {
+        categories = this.categorieRepository.findAll();
+        return this.categorieMapper.toCategorieDtoList(categories);
+    }
+    /*@Override
     public List<CategorieResDTO> getAllCategories() {
         List<Categorie> categories = categorieRepository.findAll();
         categories.forEach(cat -> System.out.println("Entité ->" +cat));
@@ -113,5 +123,10 @@ public class CategorieServiceImpl implements CategorieService {
                 description,
                 minProduits
         );
+    }
+
+    @Override
+    public Page<Categorie> getAllCategorie(Pageable pageable){
+        return categorieRepository.findAll(pageable);
     }
 }

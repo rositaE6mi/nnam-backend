@@ -14,6 +14,6 @@ public class ProduitResDTO {
     private String description;
     private double prixU;
     private LocalDate dateExpiration;
-    private int categorieId;//pour eviter kes reference circulaires
+    private int categorieId;//pour eviter kes reference circulaires //mapping depuis Categorie.idCat
     private StockResDTO stock;//creation dun DTO pour stock
 }

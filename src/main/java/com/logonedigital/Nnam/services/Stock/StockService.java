@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.Stock;
 
+import com.logonedigital.Nnam.dto.stock.StockReqDTO;
 import com.logonedigital.Nnam.entities.Stock;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.dto.produit;
 
+import com.logonedigital.Nnam.dto.stock.StockReqDTO;
 import com.logonedigital.Nnam.entities.Stock;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -22,5 +23,6 @@ public class ProduitReqDTO {
     private LocalDate dateExpiration;
     @NotNull
     private Integer categorieId;
-    @NotNull private Stock stock;
+    @NotNull
+    private StockReqDTO stock;
 }

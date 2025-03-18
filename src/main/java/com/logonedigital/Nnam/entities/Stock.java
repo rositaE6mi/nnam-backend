@@ -15,14 +15,9 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
     private String nom;
-
-    @NotNull(message = "this fill couldn't be!")
-    @Column(nullable = false)
     private int quantiteStock;
+
     @JsonBackReference
     @OneToOne(mappedBy = "stock")
     private Produit produit;

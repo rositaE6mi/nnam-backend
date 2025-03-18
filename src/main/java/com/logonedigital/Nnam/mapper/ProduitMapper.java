@@ -10,18 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring")
-//@Configuration
+@Mapper(componentModel = "spring", uses = {StockMapper.class})
 public interface ProduitMapper {
-    @Mapping(target = "idProduit", ignore = true)
-    @Mapping(target = "categorie", ignore = true)
-    @Mapping(target = "stock", ignore = true)
     Produit getProduitFromProduitReqDTO(ProduitReqDTO produitReqDTO);
 
+    @Mapping( source = "stock.id", target = "stock.idStock")
+    //@Mapping( target = "stock.idStock", ignore = true)
     @Mapping(source = "categorie.idCat", target = "categorieId")
-    @Mapping(source = "stock", target = "stock")
     ProduitResDTO getProduitResDTOFromProduit(Produit produit);
-
-
-   // List<ProduitResDTO> getProduitResDTOFromProduit(List<Produit> produits);
+    @Mapping(source = "categorie.idCat", target = "categorieId")
+   List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
 }

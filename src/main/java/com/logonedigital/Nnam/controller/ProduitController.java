@@ -13,25 +13,32 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/produits")
 public class ProduitController {
+    private final ProduitService produitService;
 
-    @Autowired
-    private ProduitService produitService;
+    public ProduitController(ProduitService produitService) {
+        this.produitService = produitService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Produit> addProduit(@Valid @RequestBody ProduitReqDTO produitReqDTO) {
         Produit savedProduit = produitService.addProduit(produitReqDTO);
-        return ResponseEntity.status(201).body(savedProduit);
+        return ResponseEntity
+                .status(201)
+                .body(savedProduit);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Produit> updateProduit(@PathVariable int id, @RequestBody Produit produit) {
-        Produit updatedProduit = produitService.updateProduit(id, produit);
-        return ResponseEntity.status(200).body(updatedProduit);
+    public ResponseEntity<ProduitResDTO> updateProduit(@PathVariable int id, @RequestBody ProduitReqDTO produit) {
+        ProduitResDTO updatedProduit = produitService.updateProduit(id, produit);
+        return ResponseEntity
+                .status(200).
+                body(updatedProduit);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -47,9 +54,11 @@ public class ProduitController {
     }
 
     @GetMapping("/get_all")
-    public ResponseEntity<List<Produit>> getAllProduits() {
-        List<Produit> produits = produitService.getAllProduits();
-        return ResponseEntity.status(200).body(produits);
+    public ResponseEntity<List<ProduitResDTO>> getAllProduits() {
+        List<Produit> produit = new ArrayList<>();
+        return ResponseEntity
+                .status(200).
+                body(this.produitService.getAllProduits(produit));
     }
     @GetMapping("/search")
     public ResponseEntity<List<Produit>> searchProduits(
@@ -61,13 +70,13 @@ public class ProduitController {
     }
 
     @GetMapping("pagination et tri/get_all")
-    public ResponseEntity<Page<Produit>> getAllProduits(
+    public ResponseEntity<Page<Produit>> getAllProduit(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "nomProduit") String sortBy) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(produitService.getAllProduits(pageable));
+        return ResponseEntity.ok(produitService.getAllProduit(pageable));
     }
 
 }

@@ -1,25 +1,32 @@
 package com.logonedigital.Nnam.services.Stock;
 
+import com.logonedigital.Nnam.dto.stock.StockReqDTO;
 import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.StockRepo;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
 public class StockServiceImpl implements StockService{
-   @Autowired
-   private StockRepo stockRepository;
+
+   private final StockRepo stockRepository;
+
+    public StockServiceImpl(StockRepo stockRepository) {
+        this.stockRepository = stockRepository;
+    }
+
 
     @Override
-    public Stock addStock(Stock stock) {
+    public Stock addStock(@Valid Stock stock) {
         if (stockRepository.existsByNom(stock.getNom())) {
             throw new ResourceExistException("Un stock avec le nom '" + stock.getNom() + "' existe déjà.");
         }
