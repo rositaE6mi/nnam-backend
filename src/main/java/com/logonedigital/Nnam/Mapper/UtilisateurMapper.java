@@ -13,9 +13,11 @@ import java.util.List;
 @Configuration
 public interface UtilisateurMapper {
 
-    @Mapping(target = "idUtilisateur" , ignore = true)
+    //@Mapping(target = "idUtilisateur" , ignore = true)
     Utilisateur toUtilisateur (UtilisateurDTO utilisateurDTO);
 
+
+    //@Mapping(source = "role.id", target = "idRole") // Associe id du rôle au DTO
     UtilisateurDTO toDTO (Utilisateur utilisateur);
 
     List <UtilisateurDTO> toEmployeDtoList(List<Utilisateur> utilisateurs);

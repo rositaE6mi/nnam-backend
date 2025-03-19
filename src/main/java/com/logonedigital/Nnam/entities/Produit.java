@@ -21,23 +21,20 @@ import java.util.Date;
 public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProduit;
+    private Integer idProduit;
 
-
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be null")
+    @NotEmpty(message = "Please fill this")
     private String nomProduit;
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
+
+    @NotEmpty(message = "Please fill this")
     private String description;
 
     @Column(nullable = false)
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
-    private double prixU;
+    @NotNull(message = "Price cannot be null")
+    private Double prixU; //
 
     @Column(nullable = false)
-    @NotNull(message = "date couldn't be null")
+    @NotNull(message = "Date cannot be null")
     private Date dateExpiration;
 
     @JsonBackReference
@@ -45,7 +42,8 @@ public class Produit {
     @JoinColumn(name = "categorie_id", nullable = false)
     private Categorie categorie;
 
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "stock_id", nullable = false)
+    @JoinColumn(name = "stock_id", unique = true) //
     private Stock stock;
 }

@@ -28,12 +28,8 @@ public class Utilisateur implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUtilisateur;
 
-    //@NotEmpty (message = "Please fill this")
-    //@NotNull ( message = "This field can't be null")
     private String nomUtilisateur;
 
-    //@NotEmpty (message = "Please fill this")
-    //@NotNull ( message = "This field can't be null")
     private String prenomUtilisateur;
 
     private String dateNaissance ;
@@ -42,8 +38,6 @@ public class Utilisateur implements Serializable {
     private String quartier ;
     private String boitePostale ;
 
-   // @Email (message = "email isn't correct!")
-    //@NotEmpty (message = "Please fill this")
     private String email ;
 
     private Date dateDeCreation ;

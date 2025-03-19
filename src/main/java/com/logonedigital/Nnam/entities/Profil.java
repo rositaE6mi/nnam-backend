@@ -26,8 +26,6 @@ public class Profil implements Serializable {
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private Integer idProfil ;
 
-    @NotEmpty(message = "Please fill this")
-    @NotNull( message = "This field can't be null")
     private String nomProfil;
     private String zoneGeographique ;
 

@@ -49,14 +49,25 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
-    public UtilisateurDTO getUtilisateurById(Integer id) {
-        Utilisateur utilisateur = utilisateurRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
+    public UtilisateurDTO getUtilisateurById(Integer idUtilisateur) {
+        Utilisateur utilisateur = utilisateurRepo.findById(idUtilisateur)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + idUtilisateur));
 
-        UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
+        UtilisateurDTO utilisateurDTO = utilisateurMapper.toDTO(utilisateur);
+
         utilisateurDTO.setIdUtilisateur(utilisateur.getIdUtilisateur());
         utilisateurDTO.setNomUtilisateur(utilisateur.getNomUtilisateur());
         utilisateurDTO.setEmail(utilisateur.getEmail());
+        utilisateurDTO.setPrenomUtilisateur(utilisateur.getPrenomUtilisateur());
+        utilisateurDTO.setBoitePostale(utilisateurDTO.getBoitePostale());
+        utilisateurDTO.setLieuNaissance(utilisateurDTO.getLieuNaissance());
+        utilisateurDTO.setVilleActuelle(utilisateurDTO.getVilleActuelle());
+        utilisateurDTO.setQuartier(utilisateurDTO.getQuartier());
+        utilisateurDTO.setDateDeCreation(utilisateur.getDateDeCreation());
+        utilisateurDTO.setDateDeModification(utilisateur.getDateDeModification());
+        utilisateurDTO.setStatut(utilisateur.getStatut());
+        //utilisateurDTO.setIdRole(utilisateur.getRole());
+
         return utilisateurDTO;
 
     }

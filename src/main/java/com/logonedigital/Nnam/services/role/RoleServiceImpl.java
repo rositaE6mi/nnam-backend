@@ -37,8 +37,6 @@ public class RoleServiceImpl implements RoleService{
 
         Role savedRole = roleRepo.save(role);
 
-        roleDTO.setIdRole(savedRole.getIdRole());
-
         return roleDTO;
     }
 
