@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.Stock;
 
+import com.logonedigital.Nnam.dto.stock.StockReqDTO;
 import com.logonedigital.Nnam.entities.Stock;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface StockService {
     List<Stock> getAllStock();
 
     boolean existsById(int id);
+
+    List<Stock> searchStocks(String nom, Integer minQuantiteStock, Integer maxQuantiteStock);
 }
