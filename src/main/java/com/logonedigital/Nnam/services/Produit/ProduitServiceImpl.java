@@ -215,13 +215,25 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
             PDPage page = new PDPage();
             document.addPage(page);
 
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Configuration des colonnes
-                float margin = 50;
-                float y = 700;
-                float[] columnXpositions = {margin, margin + 200, margin + 350}; // Positions X des colonnes
+            PDPageContentStream contentStream = null;
+            float y = 700;
+            float margin = 50;
+            float[] columnXpositions = {margin, margin + 200, margin + 350};
 
-                // En-tête du tableau
+            try {
+                contentStream = new PDPageContentStream(document, page);
+
+                // En-tête personnalisé
+                if (config.getHeaderText() != null) {
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, y);
+                    contentStream.showText(config.getHeaderText());
+                    contentStream.endText();
+                    y -= 30;
+                }
+                // En-tête
+
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 drawColumnText(contentStream, columnXpositions, y,
                         new String[]{"Nom Produit", "Prix (FCFA)", "Stock"});
@@ -231,24 +243,42 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
                 // Données
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
                 for (Produit p : produits) {
-                    if (y < 100) { // Nouvelle page si nécessaire
+                    if (y < 100) {
                         contentStream.close();
                         page = new PDPage();
                         document.addPage(page);
-                        new PDPageContentStream(document, page);
+                        contentStream = new PDPageContentStream(document, page);
                         y = 700;
+
+                        // Réinitialiser la police après nouvelle page
+                        contentStream.setFont(PDType1Font.HELVETICA, 12);
                     }
+
+                    // Formatter le prix avec des caractères valides
+                    String prixFormatted = String.format(java.util.Locale.US, "%,.2f", p.getPrixU())
+                            .replace('\u202F', ' '); // Remplace l'espace insécable
 
                     drawColumnText(contentStream, columnXpositions, y,
                             new String[]{
                                     p.getNomProduit(),
-                                    String.format("%,.2f", p.getPrixU()),
+                                    prixFormatted,
                                     String.valueOf(p.getStock().getQuantiteStock())
                             });
 
                     y -= 20;
                 }
 
+                if (config.getFooterText() != null) {
+                    contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 10);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, 40); // Position Y fixe en bas
+                    contentStream.showText(config.getFooterText());
+                    contentStream.endText();
+                }
+            } finally {
+                if (contentStream != null) {
+                    contentStream.close();
+                }
             }
 
             document.save(outputStream);
@@ -256,7 +286,7 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
         }
     }
 
-    // Méthode helper pour dessiner les colonnes
+    // Méthode helper inchangée
     private void drawColumnText(PDPageContentStream cs, float[] positions, float y, String[] texts)
             throws IOException {
         for (int i = 0; i < texts.length; i++) {
@@ -266,5 +296,4 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
             cs.endText();
         }
     }
-
 }
