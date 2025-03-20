@@ -1,5 +1,6 @@
 package com.logonedigital.Nnam.services.Produit;
 
+import com.logonedigital.Nnam.dto.PdfExportConfigDTO;
 import com.logonedigital.Nnam.dto.produit.ProduitReqDTO;
 import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Produit;
@@ -19,9 +20,12 @@ public interface ProduitService {
     ProduitResDTO getProduit(int idProduit);
     //List<Produit> getAllProduits();
 
-    List<ProduitResDTO> getAllProduits(List<Produit> produits);
+    List<ProduitResDTO> getAllProduits();
 
     Page<Produit> getAllProduit(Pageable pageable);
 
     List<Produit> search(String nom, Double minPrice, Double maxPrice);
+
+    byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Exception;
+
 }

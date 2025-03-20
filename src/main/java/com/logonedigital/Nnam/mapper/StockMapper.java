@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Mapper(componentModel = "spring")
 public interface StockMapper {
-    @Mapping(source = "id", target = "idStock")
+    //@Mapping(source = "id", target = "idStock")
     StockResDTO toDTO(Stock stock);
     Stock toEntity(StockReqDTO dto);
 }
