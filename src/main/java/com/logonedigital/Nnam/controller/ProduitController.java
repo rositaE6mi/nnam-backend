@@ -12,10 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,23 +88,36 @@ public class ProduitController {
     }
 
     @PostMapping("/export-pdf")
-    public ResponseEntity<?> exportProduitsToPdf(
-            @RequestBody(required = false) PdfExportConfigDTO config) { // DTO optionnel
-
-        // Créer une config par défaut si non fournie
-        if (config == null) {
-            config = new PdfExportConfigDTO(); // Utilise les valeurs par défaut
-        }
-
+    public ResponseEntity<?> exporterProduitsEnPDF(@RequestBody PdfExportConfigDTO config) {
         try {
-            byte[] pdfBytes = produitService.generateProduitsPdfReport(config);
-            return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=rapport.pdf")
+            byte[] pdfContent = produitService.generateProduitsPdfReport(config);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=rapport_produits.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
-                    .body(pdfBytes);
+                    .body(pdfContent);
+
+        } catch (ResourceNotFoundException ex) {
+            // Gestion cohérente avec getProduit()
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of(
+                            "status", "ERROR",
+                            "message", ex.getMessage(),
+                            "timestamp", LocalDateTime.now()
+                    ));
 
         } catch (Exception ex) {
-            return ResponseEntity.status(404).body(Map.of("error", ex.getMessage()));
+            // Format d'erreur identique à addProduit()
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "status", "ERROR",
+                            "message", "Échec de génération du rapport",
+                            "details", ex.getMessage(),
+                            "timestamp", LocalDateTime.now()
+                    ));
         }
     }
 }

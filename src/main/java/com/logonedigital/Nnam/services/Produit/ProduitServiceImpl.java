@@ -216,67 +216,55 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
             document.addPage(page);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Configuration des positions
+                // Configuration des colonnes
                 float margin = 50;
                 float y = 700;
-                float[] columnPositions = {margin, margin + 200, margin + 350}; // Positions X des colonnes
-
-                // Police et taille pour les en-têtes
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                float[] columnXpositions = {margin, margin + 200, margin + 350}; // Positions X des colonnes
 
                 // En-tête du tableau
-                contentStream.beginText();
-                contentStream.newLineAtOffset(columnPositions[0], y);
-                contentStream.showText("Nom du Produit");
-                contentStream.newLineAtOffset(columnPositions[1] - columnPositions[0], 0);
-                contentStream.showText("Prix (FCFA)");
-                contentStream.newLineAtOffset(columnPositions[2] - columnPositions[1], 0);
-                contentStream.showText("Stock");
-                contentStream.endText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                drawColumnText(contentStream, columnXpositions, y,
+                        new String[]{"Nom Produit", "Prix (FCFA)", "Stock"});
 
-                y -= 20;
+                y -= 30;
 
-                // Ligne de séparation
-                contentStream.moveTo(margin, y);
-                contentStream.lineTo(page.getMediaBox().getWidth() - margin, y);
-                contentStream.stroke();
-
-                y -= 25;
-
-                // Données des produits
+                // Données
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
                 for (Produit p : produits) {
-                    contentStream.beginText();
-                    // Colonne 1: Nom
-                    contentStream.newLineAtOffset(columnPositions[0], y);
-                    contentStream.showText(p.getNomProduit());
-
-                    // Colonne 2: Prix formaté
-                    contentStream.newLineAtOffset(columnPositions[1] - columnPositions[0], 0);
-                    contentStream.showText(String.format("%,.2f", p.getPrixU()));
-
-                    // Colonne 3: Stock si activé
-                    if (config.isIncludeStockDetails()) {
-                        contentStream.newLineAtOffset(columnPositions[2] - columnPositions[1], 0);
-                        contentStream.showText(String.valueOf(p.getStock().getQuantiteStock()));
-                    }
-
-                    contentStream.endText();
-                    y -= 20;
-
-                    // Gestion de la pagination
-                    if (y < margin) {
+                    if (y < 100) { // Nouvelle page si nécessaire
                         contentStream.close();
                         page = new PDPage();
                         document.addPage(page);
-                        contentStream = new PDPageContentStream(document, page);
+                        new PDPageContentStream(document, page);
                         y = 700;
                     }
+
+                    drawColumnText(contentStream, columnXpositions, y,
+                            new String[]{
+                                    p.getNomProduit(),
+                                    String.format("%,.2f", p.getPrixU()),
+                                    String.valueOf(p.getStock().getQuantiteStock())
+                            });
+
+                    y -= 20;
                 }
+
             }
 
             document.save(outputStream);
             return outputStream.toByteArray();
         }
     }
+
+    // Méthode helper pour dessiner les colonnes
+    private void drawColumnText(PDPageContentStream cs, float[] positions, float y, String[] texts)
+            throws IOException {
+        for (int i = 0; i < texts.length; i++) {
+            cs.beginText();
+            cs.newLineAtOffset(positions[i], y);
+            cs.showText(texts[i]);
+            cs.endText();
+        }
+    }
+
 }
