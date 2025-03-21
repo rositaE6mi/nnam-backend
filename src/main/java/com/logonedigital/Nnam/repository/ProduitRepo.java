@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProduitRepo extends JpaRepository<Produit, Integer> {
@@ -14,7 +15,7 @@ public interface ProduitRepo extends JpaRepository<Produit, Integer> {
     List<Produit> findByPriceRange(@Param("min") double min, @Param("max") double max);
 
     @Query("SELECT p FROM Produit p JOIN FETCH p.stock WHERE p.idProduit = :idProduit")
-    Produit findProduitWithStock(@Param("idProduit") int idProduit);
+    Optional<Produit> findProduitWithStock(@Param("idProduit") int idProduit);
 
 
     List<Produit> findByNomProduitContainingAndPrixUBetween(String nom, Double minPrice, Double maxPrice);

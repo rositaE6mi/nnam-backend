@@ -107,19 +107,10 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public ProduitResDTO getProduit(int idProduit) {
-        Produit produit = produitRepository.findProduitWithStock(idProduit);
+        Produit produit = produitRepository.findProduitWithStock(idProduit)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé avec l'ID : " + idProduit));
 
-        if (produit == null) {
-            throw new ResourceNotFoundException("Produit non trouvé avec l'ID : " + idProduit);
-        }
-
-        ProduitResDTO dto = produitMapper.getProduitResDTOFromProduit(produit);
-
-        if (produit.getStock() != null) {
-            dto.setStock(stockMapper.toDTO(produit.getStock())); // Plus jamais NULL !
-        }
-
-        return dto;
+        return produitMapper.getProduitResDTOFromProduit(produit);
     }
 
     @Override
