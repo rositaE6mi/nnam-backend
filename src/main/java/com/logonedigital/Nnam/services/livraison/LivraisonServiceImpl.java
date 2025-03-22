@@ -76,4 +76,9 @@ public class LivraisonServiceImpl implements LivraisonService{
         List<Livraison> livraisons = this.livraisonRepo.findAll();
         return this.livraisonMapper.getAllLivraisonResDTOFromAllLIvraison(livraisons);
     }
+
+    @Override
+    public List<Livraison> getLivraisonsByLivreurId(Long livreurId) {
+        return livraisonRepo.findLivraisonsByLivreurId(livreurId);
+    }
 }

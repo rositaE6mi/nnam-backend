@@ -12,4 +12,6 @@ public interface LivraisonService {
     void updateLivraison(Integer idLivraison, LivraisonReqDTO livraison );
     LivraisonResDTO getLivriasonById(Integer idLivraison);
     List<LivraisonResDTO> getAllLivraison();
+
+    List<Livraison> getLivraisonsByLivreurId(Long livreurId);
 }
