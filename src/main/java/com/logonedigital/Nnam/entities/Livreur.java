@@ -1,10 +1,7 @@
 package com.logonedigital.Nnam.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,8 +30,7 @@ public class Livreur implements Serializable {
 
     private Integer idLivreur;
 
-    @NotEmpty(message = "Please fill this")
-    @NotNull( message = "This field can't be null")
+
     private String nom;
 
     private String prenom;
@@ -45,6 +41,7 @@ public class Livreur implements Serializable {
     private Date updatedAt;
 
 
-    private List<Livreur> livreurs = new ArrayList<>();
+@OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL)
+private List<Livraison> livraisons;
 
 }

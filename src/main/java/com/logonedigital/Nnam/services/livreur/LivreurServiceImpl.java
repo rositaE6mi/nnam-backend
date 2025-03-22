@@ -1,8 +1,11 @@
 package com.logonedigital.Nnam.services.livreur;
 
+import com.logonedigital.Nnam.dto.LivreurReqDTO;
+import com.logonedigital.Nnam.dto.LivreurResDTO;
 import com.logonedigital.Nnam.entities.Livreur;
 import com.logonedigital.Nnam.exceptions.ResourceExistException;
 import com.logonedigital.Nnam.exceptions.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.LivreurMapper;
 import com.logonedigital.Nnam.repositories.LivreurRepo;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +17,20 @@ import java.util.Optional;
 public class LivreurServiceImpl implements  LivreurService{
 
     private final LivreurRepo livreurRepo;
+    private final LivreurMapper livreurMapper;
 
-    public LivreurServiceImpl(LivreurRepo livreurRepo) {
+    public LivreurServiceImpl(LivreurRepo livreurRepo, LivreurMapper livreurMapper) {
         this.livreurRepo = livreurRepo;
+        this.livreurMapper = livreurMapper;
     }
 
     @Override
-    public void addLivreur(Livreur livreur) {
-        Optional<Livreur> livreurToAdd = this.livreurRepo.findByNom(livreur.getNom());
+    public void addLivreur(LivreurReqDTO livreurReqDTO) {
+        Optional<Livreur> livreurToAdd = this.livreurRepo.findByNom(livreurReqDTO.getNom());
         if(livreurToAdd.isPresent())
             throw new ResourceExistException("La ressource existe deja !");
+
+        Livreur livreur = this.livreurMapper.getLivreurFromLivreurReqDTO(livreurReqDTO);
         livreur.setCreatedAt(new Date());
         this.livreurRepo.save(livreur);
     }
@@ -37,24 +44,26 @@ public class LivreurServiceImpl implements  LivreurService{
     }
 
     @Override
-    public void updateLivreur(Integer idLivreur, Livreur livreur) {
+    public void updateLivreur(Integer idLivreur, LivreurReqDTO livreurReqDTO) {
         Livreur livreurToUpdate = this.livreurRepo.findById(idLivreur)
                 .orElseThrow(()-> new ResourceNotFoundException("La ressource n'existe pas !"));
-        livreurToUpdate.setNom(livreur.getNom());
-        livreurToUpdate.setPrenom(livreur.getPrenom());
-        livreurToUpdate.setTelephone(livreur.getTelephone());
+        livreurToUpdate.setNom(livreurReqDTO.getNom());
+        livreurToUpdate.setPrenom(livreurReqDTO.getPrenom());
+        livreurToUpdate.setTelephone(livreurReqDTO.getTelephone());
         livreurToUpdate.setUpdatedAt(new Date());
         this.livreurRepo.saveAndFlush(livreurToUpdate);
     }
 
     @Override
-    public Livreur getById(Integer idLivreur) {
-        return this.livreurRepo.findById(idLivreur)
+    public LivreurResDTO getById(Integer idLivreur) {
+        Livreur livreur= this.livreurRepo.findById(idLivreur)
                 .orElseThrow(()-> new ResourceNotFoundException("La ressource n'existe pas !"));
+        return this.livreurMapper.getLivreurResDTOFromLivreur(livreur);
     }
 
     @Override
-    public List<Livreur> getAllLivreur() {
-        return  this.livreurRepo.findAll();
+    public List<LivreurResDTO> getAllLivreur() {
+        List<Livreur> livreurs = this.livreurRepo.findAll();
+        return  this.livreurMapper.getAllLivreurResDTOFromALlLivreur(livreurs);
     }
 }

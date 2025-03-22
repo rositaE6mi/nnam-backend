@@ -1,5 +1,7 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.LivraisonReqDTO;
+import com.logonedigital.Nnam.dto.LivraisonResDTO;
 import com.logonedigital.Nnam.entities.Livraison;
 import com.logonedigital.Nnam.services.livraison.LivraisonService;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ public class LivraisonController {
 
 
     @PostMapping(path = "api/livraison/add")
-    public ResponseEntity<String> addLivraison(@Valid @RequestBody Livraison livraison){
-        this.livraisonService.addLivraison(livraison);
+    public ResponseEntity<String> addLivraison(@Valid @RequestBody LivraisonReqDTO livraisonReqDTO){
+        this.livraisonService.addLivraison(livraisonReqDTO);
 
         return  ResponseEntity
                 .status(200)
@@ -36,7 +38,7 @@ public class LivraisonController {
     }
 
     @PutMapping(path = "api/livraison/update/{idLivraison}")
-    public ResponseEntity<String>  updateLivraison(Integer idLivraison, @Valid @RequestBody Livraison livraison){
+    public ResponseEntity<String>  updateLivraison(Integer idLivraison, @Valid @RequestBody LivraisonReqDTO livraison){
         this.livraisonService.updateLivraison(idLivraison, livraison);
 
         return ResponseEntity
@@ -46,7 +48,7 @@ public class LivraisonController {
 
 
     @GetMapping(path = "api/livraison/get_by_id'{idLivraison}")
-    public ResponseEntity<Livraison> getbyid(Integer idLivraison){
+    public ResponseEntity<LivraisonResDTO> getbyid(Integer idLivraison){
         return ResponseEntity
                 .status(200)
                 .body(this.livraisonService.getLivriasonById(idLivraison));
@@ -54,7 +56,7 @@ public class LivraisonController {
     }
 
     @GetMapping(path = "api/livraison/getAll")
-    public ResponseEntity<List<Livraison>> listLivraison(){
+    public ResponseEntity<List<LivraisonResDTO>> listLivraison(){
         return ResponseEntity
                 .status(200)
                 .body(this.livraisonService.getAllLivraison());

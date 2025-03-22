@@ -1,6 +1,7 @@
 package com.logonedigital.Nnam.entities;
 
 
+import com.logonedigital.Nnam.dto.LivreurResDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +34,6 @@ public class Livraison implements Serializable {
 
     private Integer idLivraison;
 
-    @NotEmpty(message = "Please fill this")
-    @NotNull( message = "This field can't be null")
 
     private String adresseDestination;
 
@@ -45,8 +44,10 @@ public class Livraison implements Serializable {
     private Date createdAt;
     private Date updatedAt;
 
-
+    @ManyToOne
+    @JoinColumn(name = "livreur_id")
+    private Livreur livreur ;
 
 //    @ManyToOne
-//    private List<Livraison> livraisons = new ArrayList<>();
+//    private List<Livreur> livreurs = new ArrayList<>();
 }
