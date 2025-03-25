@@ -6,6 +6,10 @@ import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.UtilisateurRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -78,6 +82,14 @@ public class UtilisateurServiceImpl implements UtilisateurService{private final 
         Utilisateur utilisateur = utilisateurRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
         utilisateurRepo.delete(utilisateur);
+    }
+
+    @Override
+    public Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Utilisateur> utilisateursPage = utilisateurRepo.findAll(pageable);
+        return null;
     }
 
     public UtilisateurRepo getUtilisateurRepo() {

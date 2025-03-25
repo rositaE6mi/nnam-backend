@@ -20,7 +20,7 @@ public class UtilisateurDTO {
     @ApiModelProperty(value = "ID de l'utilisateur", hidden = true) // Cela cache l'ID dans Swagger si ce n'est pas nécessaire
     private Integer idUtilisateur;
 
-    @NotEmpty(message = "Please fill this")
+    @NotEmpty(message = "Le nom ne doit pas etre null")
     @ApiModelProperty(value = "Nom de l'utilisateur", required = true)
     private String nomUtilisateur;
 
