@@ -13,12 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import jakarta.persistence.Column;
-
-import java.util.Date;
-import java.util.stream.Collectors;
-
 import java.util.List;
 
 @Service
@@ -88,8 +82,14 @@ public class UtilisateurServiceImpl implements UtilisateurService{private final 
     public Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        // Récupérer la page des utilisateurs depuis le repository
         Page<Utilisateur> utilisateursPage = utilisateurRepo.findAll(pageable);
-        return null;
+
+        // Mapper la page des entités Utilisateur vers la page des DTO UtilisateurDTO
+        Page<UtilisateurDTO> utilisateurDTOPage = utilisateursPage.map(utilisateurMapper::toUtilisateurDTO);
+
+        return utilisateurDTOPage;
     }
 
     public UtilisateurRepo getUtilisateurRepo() {

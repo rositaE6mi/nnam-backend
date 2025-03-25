@@ -37,5 +37,7 @@ public interface UtilisateurMapper {
     }
 
     // Conversion d'une liste d'Utilisateur en une liste de UtilisateurDTO
+    List<UtilisateurDTO> toUtilisateurDTOList(List<Utilisateur> utilisateurs);
+
     List<UtilisateurDTO> toEmployeDtoList(List<Utilisateur> utilisateurs);
 }
