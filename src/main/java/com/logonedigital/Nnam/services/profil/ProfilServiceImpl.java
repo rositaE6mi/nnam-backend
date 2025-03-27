@@ -32,20 +32,18 @@ public class ProfilServiceImpl implements ProfilService{
             throw new ResourceExistException("Le profil '" + profilDTO.getNomProfil() + "' existe déjà !");
         }
 
-        Profil profil = new Profil();
-        profil.setNomProfil(profilDTO.getNomProfil());
-        profil.setIdProfil(profil.getIdProfil());
+        Profil profil = profilMapper.toProfil(profilDTO); // Utilisation du mappage
         Profil savedProfil = profilRepo.save(profil);
 
-        return this.profilMapper.toProfilDTO(savedProfil);
+        return profilMapper.toProfilDTO(savedProfil); // Conversion de l'entité sauvegardée en DTO
+
 
     }
 
     @Override
     public List<ProfilDTO> getAllProfils() {
         List<Profil> profils = profilRepo.findAll();
-        return this.profilMapper.toProfilDTOList(profils);
-
+        return profilMapper.toProfilDTOList(profils); // Conversion de la liste de Profils en ProfilDTOs
     }
 
     @Override

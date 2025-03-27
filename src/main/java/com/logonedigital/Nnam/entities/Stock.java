@@ -17,16 +17,15 @@ import lombok.Setter;
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer idStock;
 
     @Column(nullable = false)
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
+    @NotEmpty(message = "Please fill this")
     private String nom;
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
+
     @Column(nullable = false)
     private int quantiteStock;
+
     @JsonBackReference
     @OneToOne(mappedBy = "stock")
     private Produit produit;

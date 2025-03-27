@@ -6,85 +6,69 @@ import com.logonedigital.Nnam.entities.Utilisateur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.repository.UtilisateurRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.stream.Collectors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 @Service
-public class UtilisateurServiceImpl implements UtilisateurService{
-    private final UtilisateurRepo utilisateurRepo;
-    private UtilisateurMapper utilisateurMapper;
+public class UtilisateurServiceImpl implements UtilisateurService{private final UtilisateurRepo utilisateurRepo;
 
-    public UtilisateurServiceImpl (UtilisateurRepo utilisateurRepo , UtilisateurMapper utilisateurMapper){
+
+    private final UtilisateurMapper utilisateurMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public UtilisateurServiceImpl(UtilisateurRepo utilisateurRepo, UtilisateurMapper utilisateurMapper, PasswordEncoder passwordEncoder) {
         this.utilisateurRepo = utilisateurRepo;
         this.utilisateurMapper = utilisateurMapper;
+        this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public UtilisateurDTO addUtilisateur(UtilisateurDTO utilisateurDTO) {
-
-        // Vérification si l'utilisateur existe déjà avec cet email
-        boolean exists = utilisateurRepo.existsByEmail(utilisateurDTO.getEmail());
-        if (exists) {
+        if (utilisateurRepo.existsByEmail(utilisateurDTO.getEmail())) {
             throw new ResourceExistException("Un utilisateur avec cet email existe déjà !");
         }
 
-        // Convertir le DTO en entité Utilisateur
         Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDTO);
-
-        // Sauvegarde en base de données
-        Utilisateur savedUtilisateur = utilisateurRepo.save(utilisateur);
-
-        // Retourner l'entité sauvegardée sous forme de DTO
-        return utilisateurMapper.toDTO(savedUtilisateur);
-
+        // Cryptage du mot de passe avant sauvegarde
+        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateurDTO.getMotDePasse()));
+        Utilisateur savedUtilisateur = utilisateurRepo.save(utilisateur); // `dateDeCreation` et `dateDeModification` sont gérés par @PrePersist
+        return utilisateurMapper.toUtilisateurDTO(savedUtilisateur);
     }
 
     @Override
     public List<UtilisateurDTO> getAllUtilisateurs() {
         List<Utilisateur> utilisateurs = utilisateurRepo.findAll();
-      return this.utilisateurMapper.toEmployeDtoList(utilisateurs);
+        return utilisateurMapper.toEmployeDtoList(utilisateurs);
     }
 
     @Override
-    public UtilisateurDTO getUtilisateurById(Integer id) {
-        Utilisateur utilisateur = utilisateurRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
-
-        UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
-        utilisateurDTO.setIdUtilisateur(utilisateur.getIdUtilisateur());
-        utilisateurDTO.setNomUtilisateur(utilisateur.getNomUtilisateur());
-        utilisateurDTO.setEmail(utilisateur.getEmail());
-        return utilisateurDTO;
-
+    public UtilisateurDTO getUtilisateurById(Integer idUtilisateur) {
+        Utilisateur utilisateur = utilisateurRepo.findById(idUtilisateur)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + idUtilisateur));
+        return utilisateurMapper.toUtilisateurDTO(utilisateur);
     }
 
     @Override
     public UtilisateurDTO updateUtilisateur(Integer id, UtilisateurDTO utilisateurDTO) {
-        Utilisateur utilisateurToUpdate = utilisateurRepo.findById(id)
+        Utilisateur utilisateur = utilisateurRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
 
-        // Vérification si l'email est déjà utilisé par un autre utilisateur
-        boolean exists = utilisateurRepo.existsByEmail(utilisateurDTO.getEmail());
-        if (exists && !utilisateurToUpdate.getEmail().equals(utilisateurDTO.getEmail())) {
+        if (!utilisateur.getEmail().equals(utilisateurDTO.getEmail()) && utilisateurRepo.existsByEmail(utilisateurDTO.getEmail())) {
             throw new ResourceExistException("L'email '" + utilisateurDTO.getEmail() + "' est déjà utilisé !");
         }
 
-        utilisateurToUpdate.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
-        utilisateurToUpdate.setEmail(utilisateurDTO.getEmail());
+        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
+        utilisateur.setPrenomUtilisateur(utilisateurDTO.getPrenomUtilisateur());
+        utilisateur.setEmail(utilisateurDTO.getEmail());
 
-        Utilisateur updatedUtilisateur = utilisateurRepo.save(utilisateurToUpdate);
-
-        UtilisateurDTO updatedUtilisateurDTO = new UtilisateurDTO();
-        updatedUtilisateurDTO.setIdUtilisateur(updatedUtilisateur.getIdUtilisateur());
-        updatedUtilisateurDTO.setNomUtilisateur(updatedUtilisateur.getNomUtilisateur());
-        updatedUtilisateurDTO.setEmail(updatedUtilisateur.getEmail());
-
-        return updatedUtilisateurDTO;
-
-
+        Utilisateur updatedUtilisateur = utilisateurRepo.save(utilisateur); // `dateDeModification` est gérée par @PreUpdate
+        return utilisateurMapper.toUtilisateurDTO(updatedUtilisateur);
     }
 
     @Override
@@ -92,7 +76,23 @@ public class UtilisateurServiceImpl implements UtilisateurService{
         Utilisateur utilisateur = utilisateurRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
         utilisateurRepo.delete(utilisateur);
+    }
 
+    @Override
+    public Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
+        // Récupérer la page des utilisateurs depuis le repository
+        Page<Utilisateur> utilisateursPage = utilisateurRepo.findAll(pageable);
+
+        // Mapper la page des entités Utilisateur vers la page des DTO UtilisateurDTO
+        Page<UtilisateurDTO> utilisateurDTOPage = utilisateursPage.map(utilisateurMapper::toUtilisateurDTO);
+
+        return utilisateurDTOPage;
+    }
+
+    public UtilisateurRepo getUtilisateurRepo() {
+        return utilisateurRepo;
     }
 }
