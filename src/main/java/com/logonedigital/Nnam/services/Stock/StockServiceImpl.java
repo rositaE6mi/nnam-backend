@@ -1,9 +1,13 @@
 package com.logonedigital.Nnam.services.Stock;
 
+import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.dto.stock.StockReqDTO;
+import com.logonedigital.Nnam.dto.stock.StockResDTO;
+import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.StockMapper;
 import com.logonedigital.Nnam.repository.StockRepo;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,9 +23,11 @@ import java.util.List;
 public class StockServiceImpl implements StockService{
 
    private final StockRepo stockRepository;
+   private  final StockMapper stockMapper;
 
-    public StockServiceImpl(StockRepo stockRepository) {
+    public StockServiceImpl(StockRepo stockRepository, StockMapper stockMapper) {
         this.stockRepository = stockRepository;
+        this.stockMapper = stockMapper;
     }
 
 
@@ -57,8 +63,9 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
-    public List<Stock> getAllStock () {
-        return  stockRepository.findAll();
+    public List<StockResDTO> getAllStock () {
+        List<Stock> stocks = this.stockRepository.findAll();
+        return  this.stockMapper.toDtoList(stocks);
     }
 
     @Override
@@ -73,27 +80,5 @@ public class StockServiceImpl implements StockService{
         }*/
         return stockRepository.findByNomContainingAndQuantiteStockBetween(nom, minQuantiteStock, maxQuantiteStock);
     }
-   /* private final StockRepo stockRepo;
-
-    public StockServiceImpl(StockRepo stockRepo){
-        this.stockRepo = stockRepo;
-    }
-
-    @Override
-    public String addStock(Stock stock){
-        stockRepo.save(stock);
-        return "Stock ajouté avec succès !";
-    }
-
-    @Override
-    public Stock getStockById(Integer id) {
-        return stockRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Stock non trouvé avec l'ID : " + id));
-    }
-    @Override
-    public List<Stock> getAllStock () {
-        return  stockRepo.findAll();
-    } */
-
 
 }

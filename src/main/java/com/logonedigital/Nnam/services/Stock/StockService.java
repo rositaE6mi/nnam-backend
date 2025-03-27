@@ -1,6 +1,7 @@
 package com.logonedigital.Nnam.services.Stock;
 
 import com.logonedigital.Nnam.dto.stock.StockReqDTO;
+import com.logonedigital.Nnam.dto.stock.StockResDTO;
 import com.logonedigital.Nnam.entities.Stock;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface StockService {
     void deleteStock(int id);
     Stock getStock(int id);
 
-    List<Stock> getAllStock();
+    List<StockResDTO> getAllStock();
 
     boolean existsById(int id);
 

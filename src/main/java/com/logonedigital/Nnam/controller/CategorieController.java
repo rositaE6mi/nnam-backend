@@ -32,7 +32,7 @@ public class CategorieController {
     }
 
     // Ajouter une catégorie
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<CategorieResDTO> addCategorie(@Valid @RequestBody CategorieReqDTO categorieReqDTO) {
         //verifions l'existence du nom
         /*if (categorieService.existsByNomCat(categorieReqDTO.getNomCat())){
@@ -47,7 +47,7 @@ public class CategorieController {
     }
 
     // Mettre à jour une catégorie
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<CategorieResDTO> updateCategorie(
             @PathVariable int id,
             @Valid @RequestBody CategorieReqDTO categorie) {
@@ -56,21 +56,21 @@ public class CategorieController {
     }
 
     // Supprimer une catégorie
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCategorie(@PathVariable int id) {
         categorieService.deleteCategorie(id);
         return ResponseEntity.status(204).build();
     }
 
     // Récupérer une catégorie par son ID
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<CategorieResDTO> getCategorie(@PathVariable int id) {
         CategorieResDTO categorieResDTO = categorieService.getCategorie(id);
         return ResponseEntity.status(200).body(categorieResDTO);
     }
 
     // Récupérer toutes les catégories
-    @GetMapping
+    @GetMapping("/get_all")
     public ResponseEntity<List<CategorieResDTO>> getAllCategories() {
         List<Categorie> categories = new ArrayList<>();
         return ResponseEntity
@@ -86,7 +86,7 @@ public class CategorieController {
         return ResponseEntity.ok(categorieService.searchCategories(nomCat, description, minProduits));
     }
 
-    @GetMapping("pagination et tri/get_all")
+    @GetMapping("/pagination et tri")
     public ResponseEntity<Page<Categorie>> getAllCategorie(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
