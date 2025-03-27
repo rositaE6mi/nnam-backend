@@ -188,6 +188,12 @@ public class UtilisateurDTO {
         this.idProfil = idProfil;
     }
 
+    public class PasswordResetRequest {
+        private String token;
+        private String newPassword;
+
+    }
+
 
 
 }
