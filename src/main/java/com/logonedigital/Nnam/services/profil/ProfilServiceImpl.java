@@ -41,4 +41,9 @@ public class ProfilServiceImpl implements ProfilService{
         profilRepo.deleteById(idProfil);
 
     }
+
+    @Override
+    public Profil save(Profil profil) {
+        return null;
+    }
 }

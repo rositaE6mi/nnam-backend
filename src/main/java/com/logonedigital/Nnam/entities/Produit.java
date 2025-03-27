@@ -1,35 +1,36 @@
 package com.logonedigital.Nnam.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.aspectj.bridge.Message;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
-@Getter
-@Setter
+//refaire les validations sur les entites
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Produit implements Serializable {
-    @Serial
-    private static final long serialVersionUID=1L;
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idProduit;
+public class Produit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idProduit;
 
     private String nomProduit;
     private String description;
     private double prixU;
-    private Date dateExpiration;
+    private LocalDate dateExpiration;
 
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "categorie_id")
+    @JoinColumn(name = "categorie_id", nullable = false)
     private Categorie categorie;
-    @OneToOne(mappedBy = "produit", cascade = CascadeType.ALL)
-    private Stock stock;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stock_id", nullable = false)
+    private Stock stock;
 }

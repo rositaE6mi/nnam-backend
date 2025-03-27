@@ -1,28 +1,24 @@
 package com.logonedigital.Nnam.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Stock{
+@Entity
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idStock;
+    private int id;
 
     private String nom;
     private int quantiteStock;
 
-    @OneToOne
-    @JoinColumn(name = "produit_id")
+    @JsonBackReference
+    @OneToOne(mappedBy = "stock")
     private Produit produit;
-
-    public int getStock() {
-        return this.quantiteStock;
-    }
 }

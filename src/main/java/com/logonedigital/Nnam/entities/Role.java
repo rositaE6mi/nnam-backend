@@ -20,6 +20,6 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRole ;
     @NotEmpty (message = "Please fill this")
-    @NotNull (message = "This field can't be null")
+    @NotNull (message = "This field can't be null3")
     private String nomRole ;
 }

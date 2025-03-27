@@ -30,7 +30,7 @@ public class Utilisateur implements Serializable {
     @NotNull ( message = "This field can't be null")
     private String nomUtilisateur;
     private String prenomUtilisateur;
-    private Date dateNaissance ;
+    private String dateNaissance ;
     private String lieuNaissance ;
     private String VilleActuelle ;
     private String quartier ;
@@ -42,6 +42,7 @@ public class Utilisateur implements Serializable {
     private Boolean statut ;
 
     @ManyToOne
+    @JoinColumn (name = "idRole")
     private Role role;
 
 }
