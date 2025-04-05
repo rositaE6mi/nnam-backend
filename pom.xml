@@ -119,17 +119,15 @@
 			<scope>provided</scope>
 		</dependency>
 
-<<<<<<< HEAD
 		<!-- Spring Boot Test -->
-=======
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
 			<version>7.1.19</version>
 		</dependency>
 
->>>>>>> origin/integration
-		<dependency>
+
+<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
