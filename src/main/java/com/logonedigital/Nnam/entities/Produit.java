@@ -20,12 +20,6 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduit;
 
-<<<<<<< HEAD
-    private String nomProduit;
-    private String description;
-    private double prixU;
-    private LocalDate dateExpiration;
-=======
     @NotEmpty(message = "Please fill this")
     private String nomProduit;
 
@@ -38,8 +32,8 @@ public class Produit {
 
     @Column(nullable = false)
     @NotNull(message = "Date cannot be null")
-    private Date dateExpiration;
->>>>>>> origin/integration
+    private LocalDate dateExpiration;
+
 
     @JsonBackReference
     @ManyToOne

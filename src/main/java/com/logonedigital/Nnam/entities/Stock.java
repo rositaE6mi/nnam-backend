@@ -15,15 +15,10 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idStock;
 
-<<<<<<< HEAD
-    private String nom;
-=======
     @Column(nullable = false)
     @NotEmpty(message = "Please fill this")
     private String nom;
 
-    @Column(nullable = false)
->>>>>>> origin/integration
     private int quantiteStock;
 
     @JsonBackReference
