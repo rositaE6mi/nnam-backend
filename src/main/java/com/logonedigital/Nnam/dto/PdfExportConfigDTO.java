@@ -28,7 +28,7 @@ public class PdfExportConfigDTO {
 
     @Schema(
             description = "Texte de pied de page",
-            example = "Généré le 2024-03-20 | Service Production",
+            example = "Généré le 2024-03-27 | Service Production",
             defaultValue = "Document confidentiel"
     )
     private String footerText = "Document confidentiel";}
