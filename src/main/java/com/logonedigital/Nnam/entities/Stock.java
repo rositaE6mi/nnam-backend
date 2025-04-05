@@ -13,9 +13,17 @@ import lombok.*;
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer idStock;
 
+<<<<<<< HEAD
     private String nom;
+=======
+    @Column(nullable = false)
+    @NotEmpty(message = "Please fill this")
+    private String nom;
+
+    @Column(nullable = false)
+>>>>>>> origin/integration
     private int quantiteStock;
 
     @JsonBackReference

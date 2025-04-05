@@ -12,7 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+<<<<<<< HEAD
 @RestControllerAdvice // 🔹 Permet à Spring d'utiliser ce gestionnaire d'exceptions
+=======
+@RestControllerAdvice
+
+>>>>>>> origin/integration
 
 public class GlobalExceptionHandler {
 
@@ -31,6 +36,11 @@ public class GlobalExceptionHandler {
 
     // Gestion des erreurs de validation (400 Bad Request)
 
+<<<<<<< HEAD
+=======
+    // 🔹 Gestion des erreurs de validation
+
+>>>>>>> origin/integration
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

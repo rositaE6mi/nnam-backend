@@ -18,19 +18,36 @@ import java.util.Date;
 public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProduit;
+    private Integer idProduit;
 
+<<<<<<< HEAD
     private String nomProduit;
     private String description;
     private double prixU;
     private LocalDate dateExpiration;
+=======
+    @NotEmpty(message = "Please fill this")
+    private String nomProduit;
+
+    @NotEmpty(message = "Please fill this")
+    private String description;
+
+    @Column(nullable = false)
+    @NotNull(message = "Price cannot be null")
+    private Double prixU; //
+
+    @Column(nullable = false)
+    @NotNull(message = "Date cannot be null")
+    private Date dateExpiration;
+>>>>>>> origin/integration
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "categorie_id", nullable = false)
     private Categorie categorie;
 
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "stock_id", nullable = false)
+    @JoinColumn(name = "stock_id", unique = true) //
     private Stock stock;
 }

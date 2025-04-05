@@ -1,9 +1,11 @@
 package com.logonedigital.Nnam.controller;
 
+import com.logonedigital.Nnam.dto.RoleDTO;
 import com.logonedigital.Nnam.entities.Role;
 import com.logonedigital.Nnam.entities.Role;
 import com.logonedigital.Nnam.repository.RoleRepo;
 import com.logonedigital.Nnam.services.role.RoleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,35 +26,37 @@ public class RoleController {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<Role> addRole(@RequestBody Role role){
-        Role savedRole = roleRepo.save(role);
-        return ResponseEntity.ok(savedRole);
+    public ResponseEntity<String> addRole(@Valid @RequestBody RoleDTO roleDTO){
+        this.roleService.addRole(roleDTO);
+        return ResponseEntity
+                .status(201)
+                .body("Role cree avec succes");
     }
 
     @GetMapping(path = "/get_All")
-    public ResponseEntity<List<Role>> getRole(){
+    public ResponseEntity<List<RoleDTO>> getRole(){
         return ResponseEntity
                 .status(200)
-                .body(this.roleService.getRoles());
+                .body(this.roleService.getAllRoles());
     }
 
     @GetMapping(path = "/get/{idRole}")
-    public ResponseEntity <Role> getRole (@PathVariable int idRole){
+    public ResponseEntity <RoleDTO> getRoleById (@PathVariable Integer idRole){
         return ResponseEntity
                 .status(200)
-                .body(this.roleService.getRole(idRole));
+                .body(this.roleService.getRoleById(idRole));
     }
 
     @PutMapping (path = "/update/{idRole}")
-    public ResponseEntity<String> updateRole(@PathVariable int idRole, @RequestBody Role role){
-        this.roleService.updateRole(idRole, role);
+    public ResponseEntity<String> updateRole(@PathVariable Integer idRole,@Valid @RequestBody RoleDTO roleDTO){
+        this.roleService.updateRole(idRole, roleDTO);
         return ResponseEntity
                 .status(200)
                 .body("Role mis a jour avec succes !");
     }
 
     @DeleteMapping (path = "/delete/{idRole}")
-    public ResponseEntity <String> deleteRole (@PathVariable int idRole){
+    public ResponseEntity <String> deleteRole (@PathVariable Integer idRole){
         this.roleService.deleteRole(idRole);
         return ResponseEntity
                 .status(200)
