@@ -1,4 +1,4 @@
-package com.logonedigital.Nnam.repositories;
+package com.logonedigital.Nnam.repository;
 
 import com.logonedigital.Nnam.entities.Livraison;
 import org.springframework.data.jpa.repository.JpaRepository;

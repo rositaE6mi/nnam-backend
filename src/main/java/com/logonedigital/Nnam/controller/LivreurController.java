@@ -7,7 +7,7 @@ import com.logonedigital.Nnam.dto.PageDTO;
 import com.logonedigital.Nnam.entities.Livraison;
 import com.logonedigital.Nnam.entities.Livreur;
 import com.logonedigital.Nnam.mapper.LivreurMapper;
-import com.logonedigital.Nnam.repositories.LivreurRepo;
+import com.logonedigital.Nnam.repository.LivreurRepo;
 import com.logonedigital.Nnam.services.livreur.LivreurService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

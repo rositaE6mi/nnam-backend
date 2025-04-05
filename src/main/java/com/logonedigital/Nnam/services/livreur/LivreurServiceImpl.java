@@ -6,7 +6,7 @@ import com.logonedigital.Nnam.entities.Livreur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.LivreurMapper;
-import com.logonedigital.Nnam.repositories.LivreurRepo;
+import com.logonedigital.Nnam.repository.LivreurRepo;
 import com.logonedigital.Nnam.specification.LivreurSpecification;
 import org.springframework.stereotype.Service;
 

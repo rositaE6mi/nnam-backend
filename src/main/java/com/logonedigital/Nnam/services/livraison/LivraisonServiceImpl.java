@@ -8,8 +8,8 @@ import com.logonedigital.Nnam.entities.Livreur;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.LivraisonMapper;
-import com.logonedigital.Nnam.repositories.LivraisonRepo;
-import com.logonedigital.Nnam.repositories.LivreurRepo;
+import com.logonedigital.Nnam.repository.LivraisonRepo;
+import com.logonedigital.Nnam.repository.LivreurRepo;
 import com.logonedigital.Nnam.specification.LivraisonSpecification;
 import org.springframework.stereotype.Service;
 
