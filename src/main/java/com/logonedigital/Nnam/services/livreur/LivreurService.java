@@ -13,4 +13,6 @@ public interface LivreurService {
     void updateLivreur(Integer idLivreur, LivreurReqDTO livreurReqDTO);
     LivreurResDTO getById(Integer idLivreur);
     List<LivreurResDTO> getAllLivreur();
+
+    List<LivreurResDTO> searchLivreurs(LivreurReqDTO searchDTO);
 }

@@ -13,5 +13,7 @@ public interface LivraisonService {
     LivraisonResDTO getLivriasonById(Integer idLivraison);
     List<LivraisonResDTO> getAllLivraison();
 
-    List<Livraison> getLivraisonsByLivreurId(Long livreurId);
+    List<LivraisonResDTO> getLivraisonsByLivreurId(Long livreurId);
+
+    List<LivraisonResDTO    > searchLivraisons(LivraisonReqDTO searchDTO);
 }

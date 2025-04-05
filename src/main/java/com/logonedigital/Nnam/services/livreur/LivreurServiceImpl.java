@@ -7,6 +7,7 @@ import com.logonedigital.Nnam.exceptions.ResourceExistException;
 import com.logonedigital.Nnam.exceptions.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.LivreurMapper;
 import com.logonedigital.Nnam.repositories.LivreurRepo;
+import com.logonedigital.Nnam.specification.LivreurSpecification;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -65,5 +66,12 @@ public class LivreurServiceImpl implements  LivreurService{
     public List<LivreurResDTO> getAllLivreur() {
         List<Livreur> livreurs = this.livreurRepo.findAll();
         return  this.livreurMapper.getAllLivreurResDTOFromALlLivreur(livreurs);
+    }
+
+    @Override
+    public List<LivreurResDTO> searchLivreurs(LivreurReqDTO searchDTO) {
+        LivreurSpecification spec = new LivreurSpecification(searchDTO);
+        List<Livreur> livreurs = livreurRepo.findAll(spec);
+        return livreurMapper.getAllLivreurResDTOFromALlLivreur(livreurs);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-//@Component
+@Component
 public interface LivraisonMapper {
 
     Livraison getLivraisonFromLivraisonDTO(LivraisonReqDTO livraisonReqDTO);

@@ -2,6 +2,7 @@ package com.logonedigital.Nnam.services.livraison;
 
 import com.logonedigital.Nnam.dto.LivraisonReqDTO;
 import com.logonedigital.Nnam.dto.LivraisonResDTO;
+import com.logonedigital.Nnam.dto.LivreurResDTO;
 import com.logonedigital.Nnam.entities.Livraison;
 import com.logonedigital.Nnam.entities.Livreur;
 import com.logonedigital.Nnam.exceptions.ResourceExistException;
@@ -9,11 +10,13 @@ import com.logonedigital.Nnam.exceptions.ResourceNotFoundException;
 import com.logonedigital.Nnam.mapper.LivraisonMapper;
 import com.logonedigital.Nnam.repositories.LivraisonRepo;
 import com.logonedigital.Nnam.repositories.LivreurRepo;
+import com.logonedigital.Nnam.specification.LivraisonSpecification;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LivraisonServiceImpl implements LivraisonService{
@@ -78,7 +81,62 @@ public class LivraisonServiceImpl implements LivraisonService{
     }
 
     @Override
-    public List<Livraison> getLivraisonsByLivreurId(Long livreurId) {
-        return livraisonRepo.findLivraisonsByLivreurId(livreurId);
+//    public List<Livraison> getLivraisonsByLivreurId(Long livreurId) {
+//        return livraisonRepo.findLivraisonsByLivreurId(livreurId);
+//    }
+//    public List<LivraisonResDTO> getLivraisonsByLivreurId(Long livreurId) {
+//        List<Livraison> livraisons = livraisonRepo.findLivraisonsByLivreurId(livreurId);
+//        return livraisons.stream()
+//                .map(this::convertToLivraisonResDTO)
+//                .collect(Collectors.toList());
+//    }
+//
+//    // Méthode de conversion
+//    private LivraisonResDTO convertToLivraisonResDTO(Livraison livraison) {
+//        LivraisonResDTO dto = new LivraisonResDTO();
+//        dto.setIdLivraison(livraison.getIdLivraison());
+//        dto.setAdresseDestination(livraison.getAdresseDestination());
+//        dto.setEtatDeLivraison(livraison.getEtatDeLivraison());
+//        dto.setDateDeLivraison(livraison.getDateDeLivraison());
+//        dto.setLivreur(livraison.);
+//        // ajoute d'autres champs selon ce que contient ton DTO
+//        return dto;
+//    }
+
+    public List<LivraisonResDTO> getLivraisonsByLivreurId(Long livreurId) {
+        List<Livraison> livraisons = livraisonRepo.findLivraisonsByLivreurId(livreurId);
+        return livraisons.stream()
+                .map(this::convertToLivraisonResDTO)
+                .collect(Collectors.toList());
+    }
+
+    private LivraisonResDTO convertToLivraisonResDTO(Livraison livraison) {
+        LivraisonResDTO dto = new LivraisonResDTO();
+        dto.setIdLivraison(livraison.getIdLivraison());
+        dto.setAdresseDestination(livraison.getAdresseDestination());
+        dto.setDateDeLivraison(livraison.getDateDeLivraison().toString()); // ou formater
+        dto.setEtatDeLivraison(livraison.getEtatDeLivraison());
+
+        if (livraison.getLivreur() != null) {
+            LivreurResDTO livreurDTO = new LivreurResDTO();
+            livreurDTO.setIdLivreur(livraison.getLivreur().getIdLivreur());
+            livreurDTO.setNom(livraison.getLivreur().getNom());
+            livreurDTO.setPrenom(livraison.getLivreur().getPrenom());
+            livreurDTO.setTelephone(livraison.getLivreur().getTelephone());
+            dto.setLivreur(livreurDTO);
+        }
+
+        return dto;
+    }
+
+
+    @Override
+    public List<LivraisonResDTO> searchLivraisons(LivraisonReqDTO searchDTO) {
+        LivraisonSpecification spec = new LivraisonSpecification(searchDTO);
+        List<Livraison> livraisons = livraisonRepo.findAll(spec);
+        return livraisonMapper.getAllLivraisonResDTOFromAllLIvraison(livraisons);
+
+
+
     }
 }

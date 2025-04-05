@@ -82,4 +82,11 @@ public class LivreurController {
 
         return livreurs.map(livreurMapper::getLivreurResDTOFromLivreur);
     }
+
+
+    @PostMapping("api/livreur/search")
+    public ResponseEntity<List<LivreurResDTO>> searchLivreurs(@RequestBody LivreurReqDTO searchDTO) {
+        List<LivreurResDTO> result = livreurService.searchLivreurs(searchDTO);
+        return ResponseEntity.ok(result);
+    }
 }

@@ -82,8 +82,14 @@ public class LivraisonController {
 
 
     @GetMapping("/livreur/{livreurId}")
-    public ResponseEntity<List<Livraison>> getLivraisonsByLivreur(@PathVariable Long livreurId) {
-        List<Livraison> livraisons = livraisonService.getLivraisonsByLivreurId(livreurId);
+    public ResponseEntity<List<LivraisonResDTO>> getLivraisonsByLivreur(@PathVariable Long livreurId) {
+        List<LivraisonResDTO> livraisons = livraisonService.getLivraisonsByLivreurId(livreurId);
         return ResponseEntity.ok(livraisons);
+    }
+
+    @PostMapping("api/livraison/search")
+    public ResponseEntity<List<LivraisonResDTO>> searchLivraisons(@RequestBody LivraisonReqDTO searchDTO) {
+        List<LivraisonResDTO> result = livraisonService.searchLivraisons(searchDTO);
+        return ResponseEntity.ok(result);
     }
 }
