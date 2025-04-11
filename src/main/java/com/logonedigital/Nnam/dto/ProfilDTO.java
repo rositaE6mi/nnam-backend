@@ -13,15 +13,12 @@ public class ProfilDTO {
     @NotNull(message = "L'ID de l'utilisateur est obligatoire")
     private Integer idUtilisateur;
 
-    @NotNull(message = "L'ID du rôle est obligatoire")
-    private Integer idRole;
 
     public ProfilDTO(Integer idProfil, String nomProfil, String zoneGeographique, Integer idUtilisateur, Integer idRole) {
         this.idProfil = idProfil;
         this.nomProfil = nomProfil;
         this.zoneGeographique = zoneGeographique;
         this.idUtilisateur = idUtilisateur;
-        this.idRole = idRole;
     }
 
     public ProfilDTO() {
@@ -59,11 +56,4 @@ public class ProfilDTO {
         this.idUtilisateur = idUtilisateur;
     }
 
-    public Integer getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Integer idRole) {
-        this.idRole = idRole;
-    }
 }

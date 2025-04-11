@@ -30,11 +30,6 @@ public class Profil implements Serializable {
     @JsonIgnoreProperties("profil")
     private Utilisateur utilisateur;
 
-    @ManyToOne
-    @JoinColumn(name = "idRole")
-    @JsonIgnoreProperties("profils")
-    private Role role;
-
     // Constructeur vide obligatoire pour Hibernate
     public Profil() {}
 
@@ -43,7 +38,6 @@ public class Profil implements Serializable {
         this.nomProfil = nomProfil;
         this.zoneGeographique = zoneGeographique;
         this.utilisateur = utilisateur;
-        this.role = role;
     }
 
     // Getters et setters
@@ -63,10 +57,6 @@ public class Profil implements Serializable {
         return utilisateur;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
     public void setIdProfil(Integer idProfil) {
         this.idProfil = idProfil;
     }
@@ -83,8 +73,5 @@ public class Profil implements Serializable {
         this.utilisateur = utilisateur;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }
 

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -28,9 +25,6 @@ public class Role implements Serializable {
     @JsonIgnoreProperties ("role")// Empeche les boucles infinies
     private List<Utilisateur> utilisateurs;
 
-    @OneToMany(mappedBy = "role")
-    @JsonIgnoreProperties ("role")// Empeche les boucles infinies
-    private List<Profil> profils;
 
     //  Constructeur vide obligatoire pour Hibernate
     public Role() {
@@ -42,7 +36,7 @@ public class Role implements Serializable {
         this.idRole = idRole;
         this.nomRole = nomRole;
         this.utilisateurs = utilisateurs;
-        this.profils = profils;
+
     }
 
     public Role(Integer idRole) {
@@ -61,10 +55,6 @@ public class Role implements Serializable {
         return utilisateurs;
     }
 
-    public List<Profil> getProfils() {
-        return profils;
-    }
-
     public void setIdRole(Integer idRole) {
         this.idRole = idRole;
     }
@@ -77,7 +67,4 @@ public class Role implements Serializable {
         this.utilisateurs = utilisateurs;
     }
 
-    public void setProfils(List<Profil> profils) {
-        this.profils = profils;
-    }
 }

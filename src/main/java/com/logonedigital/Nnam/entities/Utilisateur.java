@@ -52,9 +52,6 @@ public class Utilisateur implements Serializable {
     @JsonIgnoreProperties("utilisateurs") // Évite la récursivité infinie
     private Role role;
 
-    @OneToOne(mappedBy = "utilisateur")
-    @JsonIgnoreProperties("utilisateur")
-    private Profil profil;
 
     // Constructeur vide obligatoire pour Hibernate
     public Utilisateur() {}
@@ -78,7 +75,6 @@ public class Utilisateur implements Serializable {
         this.dateDeModification = dateDeModification;
         this.statut = statut;
         this.role = role;
-        this.profil = profil;
     }
 
 
@@ -152,9 +148,6 @@ public class Utilisateur implements Serializable {
         return role;
     }
 
-    public Profil getProfil() {
-        return profil;
-    }
 
     // Setters
     public void setIdUtilisateur(Integer idUtilisateur) {
@@ -207,10 +200,6 @@ public class Utilisateur implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public void setProfil(Profil profil) {
-        this.profil = profil;
     }
 
     public void setMotDePasse(String motDePasse) {
