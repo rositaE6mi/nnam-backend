@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
 		<!-- Springdoc OpenAPI (une seule entrée) -->
 		<dependency>
@@ -40,6 +41,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+<<<<<<< HEAD
+
+=======
 
 		<!-- Spring Boot Validation (une seule entrée) -->
 		<dependency>
@@ -54,6 +58,7 @@
 		</dependency>
 
 		<!-- MySQL Connector -->
+>>>>>>> origin/integration
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -70,12 +75,37 @@
 
 		<!-- MapStruct -->
 		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok-mapstruct-binding</artifactId>
+			<version>0.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok-mapstruct-binding</artifactId>
+			<version>0.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.5.3.Final</version> <!-- Dernière version -->
+			<version>1.5.5.Final</version> <!-- Use the latest version -->
+		</dependency>
+
+		<!-- MapStruct Processor for annotation processing -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.5.3.Final</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
+<<<<<<< HEAD
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext7-core</artifactId>
+			<version>7.1.19</version>
+=======
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
@@ -83,6 +113,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+>>>>>>> origin/integration
 		</dependency>
 
 		<dependency>
@@ -90,6 +121,31 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/integration
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.29</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>26.0.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<<<<<<< HEAD
+	</dependencies>
+=======
+
+
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -138,7 +194,9 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-    </dependencies>
+</dependencies>
+
+>>>>>>> origin/integration
 
 	<build>
 		<plugins>

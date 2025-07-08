@@ -1,25 +1,38 @@
 package com.logonedigital.Nnam.services.Stock;
 
+import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
+import com.logonedigital.Nnam.dto.stock.StockReqDTO;
+import com.logonedigital.Nnam.dto.stock.StockResDTO;
+import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.entities.Stock;
 import com.logonedigital.Nnam.exception.ResourceExistException;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.mapper.StockMapper;
 import com.logonedigital.Nnam.repository.StockRepo;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
 public class StockServiceImpl implements StockService{
-   @Autowired
-   private StockRepo stockRepository;
+
+   private final StockRepo stockRepository;
+   private  final StockMapper stockMapper;
+
+    public StockServiceImpl(StockRepo stockRepository, StockMapper stockMapper) {
+        this.stockRepository = stockRepository;
+        this.stockMapper = stockMapper;
+    }
+
 
     @Override
-    public Stock addStock(Stock stock) {
+    public Stock addStock(@Valid Stock stock) {
         if (stockRepository.existsByNom(stock.getNom())) {
             throw new ResourceExistException("Un stock avec le nom '" + stock.getNom() + "' existe déjà.");
         }
@@ -50,35 +63,22 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
-    public List<Stock> getAllStock () {
-        return  stockRepository.findAll();
+    public List<StockResDTO> getAllStock () {
+        List<Stock> stocks = this.stockRepository.findAll();
+        return  this.stockMapper.toDtoList(stocks);
     }
 
     @Override
     public boolean existsById(int id) {
         return stockRepository.existsById(id);
     }
-   /* private final StockRepo stockRepo;
-
-    public StockServiceImpl(StockRepo stockRepo){
-        this.stockRepo = stockRepo;
-    }
 
     @Override
-    public String addStock(Stock stock){
-        stockRepo.save(stock);
-        return "Stock ajouté avec succès !";
+    public List<Stock> searchStocks(String nom, Integer minQuantiteStock, Integer maxQuantiteStock) {
+      /*  if (nom != null && minQuantiteStock != null && maxQuantiteStock != null){
+            return stockRepository.findByNomContainingAndMinQuantiteStockBetween(nom, minQuantiteStock,maxQuantiteStock);
+        }*/
+        return stockRepository.findByNomContainingAndQuantiteStockBetween(nom, minQuantiteStock, maxQuantiteStock);
     }
-
-    @Override
-    public Stock getStockById(Integer id) {
-        return stockRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Stock non trouvé avec l'ID : " + id));
-    }
-    @Override
-    public List<Stock> getAllStock () {
-        return  stockRepo.findAll();
-    } */
-
 
 }

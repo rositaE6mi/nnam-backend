@@ -129,6 +129,7 @@ public class Utilisateur implements Serializable {
     }
 
     public String getEmail() {
+
         return email;
     }
 
@@ -205,4 +206,25 @@ public class Utilisateur implements Serializable {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "idUtilisateur=" + idUtilisateur +
+                ", nomUtilisateur='" + nomUtilisateur + '\'' +
+                ", prenomUtilisateur='" + prenomUtilisateur + '\'' +
+                ", dateNaissance='" + dateNaissance + '\'' +
+                ", lieuNaissance='" + lieuNaissance + '\'' +
+                ", villeActuelle='" + villeActuelle + '\'' +
+                ", quartier='" + quartier + '\'' +
+                ", boitePostale='" + boitePostale + '\'' +
+                ", email='" + email + '\'' +
+                ", motDePasse='" + motDePasse + '\'' +
+                ", dateDeCreation=" + dateDeCreation +
+                ", dateDeModification=" + dateDeModification +
+                ", statut=" + statut +
+                ", role=" + role +
+                '}';
+    }
+
 }

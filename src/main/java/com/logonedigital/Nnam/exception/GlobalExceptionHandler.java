@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 @RestControllerAdvice
 
 
@@ -31,8 +32,6 @@ public class GlobalExceptionHandler {
 
 
     // Gestion des erreurs de validation (400 Bad Request)
-
-    // 🔹 Gestion des erreurs de validation
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

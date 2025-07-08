@@ -69,6 +69,57 @@ public class CommandeServiceImpl implements CommandeService {
             // Sauvegarder les modifications
             this.commandeRepo.saveAndFlush(commandeToUpdate);
 
+
+        // Sauvegarder les modifications
+        this.commandeRepo.saveAndFlush(commandeToUpdate);
+
+
+
+    @Override
+    public void addCommande(Commande commande) {
+        commandeRepo.save(commande);
+
+    }
+
+    // 📌 Mettre à jour une commande (Version avec `Optional`)
+    @Override
+
+    public Commande getCommande(Integer commandeId) {
+        return this.commandeRepo.findById(commandeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Commande non trouvée !"));
+    }
+
+
+    @Override
+    public boolean DeleteCommande(Integer commandeId) {
+        Optional<Commande> commande = this.commandeRepo.findById(commandeId);
+        if (commande.isPresent()) {
+            this.commandeRepo.delete(commande.get());
+            return true; // ✅ Retourne vrai si supprimée
+        }
+        return false; // ✅ Retourne faux si commande non trouvée
+
+    public Optional<Commande> UpdateCommande(Integer commandeId, Commande commande) {
+        return commandeRepo.findById(commandeId).map(existingCommande -> {
+            existingCommande.setDateCommande(commande.getDateCommande());
+            existingCommande.setStatus(commande.getStatus());
+            existingCommande.setTotal(commande.getTotal());
+            existingCommande.setFacture(commande.getFacture());
+            existingCommande.setLigneCommande(commande.getLigneCommande());
+            return Optional.of(commandeRepo.save(existingCommande));
+        }).orElse(Optional.empty());
+    }
+
+    // 📌 Supprimer une commande
+    @Override
+    public boolean DeleteCommande(Integer commandeId) {
+        if (commandeRepo.existsById(commandeId)) {
+            commandeRepo.deleteById(commandeId);
+            return true;
+        }
+        return false;
+
+    }
         }
 
         // 📌 Obtenir une commande par ID
@@ -100,6 +151,7 @@ public class CommandeServiceImpl implements CommandeService {
                     return true;
                 }
                 return false;
+
 
             }
 

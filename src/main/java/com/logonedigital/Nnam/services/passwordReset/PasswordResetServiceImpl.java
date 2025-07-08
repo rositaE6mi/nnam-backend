@@ -69,6 +69,7 @@ public class PasswordResetServiceImpl implements PasswordResetService{
 
     @Override
     public boolean sendPasswordResetEmail(String email) {
+        System.out.println("sendPasswordResetEmail" + email);
         Optional<Utilisateur> utilisateur = utilisateurRepos.findByEmail(email);
         if (utilisateur.isPresent()) {
             String token = generateResetToken();
@@ -89,6 +90,8 @@ public class PasswordResetServiceImpl implements PasswordResetService{
     }
 
     private void sendResetEmail(Utilisateur utilisateur, String token) {
+        System.out.println("sendResetEmail");
+        System.out.println("nom" +utilisateur.getNomUtilisateur() +utilisateur.getEmail() );
         // Appeler la méthode correcte pour envoyer l'email
         mailService.sendResetPasswordEmail(utilisateur.getEmail(), token);
     }
