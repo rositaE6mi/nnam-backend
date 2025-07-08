@@ -25,7 +25,7 @@ public interface ProduitMapper {
     //ProduitResDTO from(Produit produit);
     //@Mapping( source = "stock.id", target = "stock.idStock")
     //@Mapping(source = "categorie.idCat", target = "categorieId")
-    ProduitResDTO getProduitResDTOFromProduit(Produit produit);
+    //ProduitResDTO getProduitResDTOFromProduit(Produit produit);
     //@Mapping(source = "categorie.idCat", target = "categorieId")
-   List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
+   //List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
 }

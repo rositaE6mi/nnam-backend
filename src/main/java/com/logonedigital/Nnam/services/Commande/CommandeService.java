@@ -17,20 +17,14 @@ public interface CommandeService {
 
     void UpdateCommande(Integer commandeId, Commande commande);
 
+    // 📌 Récupérer une commande brute
+    Commande getCommande(Integer commandeId);
+
     CommandeDTO getCommandeDTO(Integer id);
 
     boolean DeleteCommande(Integer commandeId);
 
     List<CommandeDTO> listerCommandes();
-
-
-        // Obtenir une commande par ID
-
-    Optional<Commande> UpdateCommande(Integer commandeId, Commande commande);
-
-    boolean DeleteCommande(Integer commandeId);
-
-    List<Commande> listerCommandes();
-
-    Optional<Commande> getCommandeById(Integer commandeId);
 }
+
+
