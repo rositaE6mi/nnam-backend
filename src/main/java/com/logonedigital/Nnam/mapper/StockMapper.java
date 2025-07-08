@@ -12,7 +12,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 //@Configuration
 public interface StockMapper {
+<<<<<<< HEAD
     @Mapping(source = "idStock", target = "idStock")
+=======
+    //Mapping(source = "id", target = "idStock")
+>>>>>>> Michael
     StockResDTO toDTO(Stock stock);
     Stock toEntity(StockReqDTO dto);
     List<StockResDTO> toDtoList(List<Stock> stock);

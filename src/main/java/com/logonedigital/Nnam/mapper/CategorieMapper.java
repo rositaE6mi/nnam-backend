@@ -14,9 +14,9 @@ import java.util.List;
 //@Configuration
 public interface CategorieMapper {
     Categorie getCategorieFromCategorieReqDTO(CategorieReqDTO categorieReqDTO);
-    @Mapping(source = "produits", target = "produits")
+    //@Mapping(source = "produits", target = "produits")
     CategorieResDTO getCategorieResDTOFromCategorie(Categorie categorie);
-    @Mapping(source = "produits", target = "produits")
+    //@Mapping(source = "produits", target = "produits")
     List<CategorieResDTO> toCategorieDtoList(List<Categorie> categorie);
 
 }
