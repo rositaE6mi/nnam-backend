@@ -18,12 +18,10 @@ public class Categorie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCat;
-   @NotEmpty(message = "please fill this")
-   @NotBlank(message = "this fill couldn't be!")
+
     @Column( nullable = false, unique = true)
     private String nomCat;
-    @NotEmpty(message = "please fill this")
-    @NotBlank(message = "this fill couldn't be!")
+
     private String description;
 
     @JsonManagedReference

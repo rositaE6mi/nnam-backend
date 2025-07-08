@@ -20,18 +20,18 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduit;
 
-    @NotEmpty(message = "Please fill this")
+    //@NotEmpty(message = "Please fill this")
     private String nomProduit;
 
-    @NotEmpty(message = "Please fill this")
+    //@NotEmpty(message = "Please fill this")
     private String description;
 
     @Column(nullable = false)
-    @NotNull(message = "Price cannot be null")
+    //@NotNull(message = "Price cannot be null")
     private Double prixU; //
 
     @Column(nullable = false)
-    @NotNull(message = "Date cannot be null")
+    //@NotNull(message = "Date cannot be null")
     private LocalDate dateExpiration;
 
 

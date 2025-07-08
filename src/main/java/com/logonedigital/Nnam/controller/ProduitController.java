@@ -86,6 +86,13 @@ public class ProduitController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return ResponseEntity.ok(produitService.getAllProduit(pageable));
     }
+/*
+    @GetMapping("/categorie/nom/{nomCategorie}")
+    public ResponseEntity<List<ProduitResDTO>> getProduitsParNomCategorie(@PathVariable String nomCategorie) {
+        List<ProduitResDTO> produits = produitService.getProduitsParNomCategorie(nomCategorie);
+        return ResponseEntity.ok(produits);
+    }*/
+
 
     @PostMapping("/export-pdf")
     public ResponseEntity<?> exporterProduitsEnPDF(@RequestBody PdfExportConfigDTO config) {

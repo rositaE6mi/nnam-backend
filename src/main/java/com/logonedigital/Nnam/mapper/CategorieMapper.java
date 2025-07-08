@@ -5,7 +5,7 @@ import com.logonedigital.Nnam.dto.categorie.CategorieResDTO;
 import com.logonedigital.Nnam.entities.Categorie;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.context.annotation.Configuration;
+//import org.springframework.context.annotation.Configuration;
 //import org.springframework.context.annotation.Configuration;
 
 import java.util.List;

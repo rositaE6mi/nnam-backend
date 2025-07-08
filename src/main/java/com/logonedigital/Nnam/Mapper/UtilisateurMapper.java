@@ -40,4 +40,6 @@ public interface UtilisateurMapper {
     List<UtilisateurDTO> toUtilisateurDTOList(List<Utilisateur> utilisateurs);
 
     List<UtilisateurDTO> toEmployeDtoList(List<Utilisateur> utilisateurs);
+
+    List<UtilisateurDTO> toUtilisateurDtoList(List<Utilisateur> utilisateurs);
 }

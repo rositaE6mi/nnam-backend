@@ -70,4 +70,18 @@ public class UtilisateurController {
         Page<UtilisateurDTO> utilisateurs = utilisateurService.getUtilisateurs(page, size, sortBy, sortDirection);
         return ResponseEntity.ok(utilisateurs);
     }
+
+    // Ajoute un endpoint pour la connexion de l'administrateur
+    @PostMapping("/login-admin")
+    public ResponseEntity<String> loginAdmin(@RequestParam String email, @RequestParam String motDePasse) {
+        boolean isAuthenticated = utilisateurService.loginAdmin(email, motDePasse);
+        if (isAuthenticated) {
+            return ResponseEntity.ok("Connexion réussie");
+        } else {
+            return ResponseEntity.status(401).body("Identifiants incorrects");
+        }
+    }
+
+
+
 }

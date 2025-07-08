@@ -19,5 +19,8 @@ public interface ProduitMapper {
     @Mapping(source = "categorie.idCat", target = "categorieId")
     ProduitResDTO getProduitResDTOFromProduit(Produit produit);
     @Mapping(source = "categorie.idCat", target = "categorieId")
-   List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
+    List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
+
+    //@Mapping(source = "categorie.idCat", target = "categorieId")
+    //ProduitResDTO from(Produit produit);
 }

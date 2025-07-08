@@ -16,7 +16,7 @@ public class Stock {
     private Integer idStock;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Please fill this")
+    //@NotEmpty(message = "Please fill this")
     private String nom;
 
     private int quantiteStock;

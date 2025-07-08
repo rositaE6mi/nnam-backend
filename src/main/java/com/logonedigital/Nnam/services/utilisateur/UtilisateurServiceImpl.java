@@ -1,4 +1,4 @@
-package com.logonedigital.Nnam.services.utilisateur;
+/*package com.logonedigital.Nnam.services.utilisateur;
 
 import com.logonedigital.Nnam.Mapper.UtilisateurMapper;
 import com.logonedigital.Nnam.dto.UtilisateurDTO;
@@ -94,5 +94,104 @@ public class UtilisateurServiceImpl implements UtilisateurService{private final 
 
     public UtilisateurRepo getUtilisateurRepo() {
         return utilisateurRepo;
+    }
+}
+
+*/
+package com.logonedigital.Nnam.services.utilisateur;
+
+import com.logonedigital.Nnam.Mapper.UtilisateurMapper;
+import com.logonedigital.Nnam.dto.UtilisateurDTO;
+import com.logonedigital.Nnam.entities.Utilisateur;
+import com.logonedigital.Nnam.exception.ResourceExistException;
+import com.logonedigital.Nnam.exception.ResourceNotFoundException;
+import com.logonedigital.Nnam.repository.UtilisateurRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UtilisateurServiceImpl implements UtilisateurService {
+
+    private final UtilisateurRepo utilisateurRepo;
+    private final UtilisateurMapper utilisateurMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public UtilisateurServiceImpl(UtilisateurRepo utilisateurRepo, UtilisateurMapper utilisateurMapper, PasswordEncoder passwordEncoder) {
+        this.utilisateurRepo = utilisateurRepo;
+        this.utilisateurMapper = utilisateurMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UtilisateurDTO addUtilisateur(UtilisateurDTO utilisateurDTO) {
+        if (utilisateurRepo.existsByEmail(utilisateurDTO.getEmail())) {
+            throw new ResourceExistException("Un utilisateur avec cet email existe déjà !");
+        }
+
+        Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDTO);
+        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateurDTO.getMotDePasse()));
+        Utilisateur savedUtilisateur = utilisateurRepo.save(utilisateur);
+        return utilisateurMapper.toUtilisateurDTO(savedUtilisateur);
+    }
+
+    @Override
+    public List<UtilisateurDTO> getAllUtilisateurs() {
+        List<Utilisateur> utilisateurs = utilisateurRepo.findAll();
+        return utilisateurMapper.toUtilisateurDtoList(utilisateurs);
+    }
+
+    @Override
+    public UtilisateurDTO getUtilisateurById(Integer idUtilisateur) {
+        Utilisateur utilisateur = utilisateurRepo.findById(idUtilisateur)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + idUtilisateur));
+        return utilisateurMapper.toUtilisateurDTO(utilisateur);
+    }
+
+    @Override
+    public UtilisateurDTO updateUtilisateur(Integer id, UtilisateurDTO utilisateurDTO) {
+        Utilisateur utilisateur = utilisateurRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
+
+        if (!utilisateur.getEmail().equals(utilisateurDTO.getEmail()) && utilisateurRepo.existsByEmail(utilisateurDTO.getEmail())) {
+            throw new ResourceExistException("L'email '" + utilisateurDTO.getEmail() + "' est déjà utilisé !");
+        }
+
+        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
+        utilisateur.setPrenomUtilisateur(utilisateurDTO.getPrenomUtilisateur());
+        utilisateur.setEmail(utilisateurDTO.getEmail());
+        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateurDTO.getMotDePasse()));
+        Utilisateur updatedUtilisateur = utilisateurRepo.save(utilisateur);
+        return utilisateurMapper.toUtilisateurDTO(updatedUtilisateur);
+    }
+
+    @Override
+    public void deleteUtilisateur(Integer id) {
+        Utilisateur utilisateur = utilisateurRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
+        utilisateurRepo.delete(utilisateur);
+    }
+
+    @Override
+    public Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Utilisateur> utilisateursPage = utilisateurRepo.findAll(pageable);
+        return utilisateursPage.map(utilisateurMapper::toUtilisateurDTO);
+    }
+
+    public boolean loginAdmin(String email, String motDePasse) {
+        Optional<Utilisateur> utilisateurOptional = utilisateurRepo.findByEmail(email);
+        if (utilisateurOptional.isPresent()) {
+            Utilisateur utilisateur = utilisateurOptional.get();
+            return passwordEncoder.matches(motDePasse, utilisateur.getMotDePasse()) && utilisateur.getRole().getNomRole().equals("ADMIN");
+        }
+        return false;
     }
 }

@@ -28,4 +28,5 @@ public interface ProduitService {
 
     byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Exception;
 
+   // List<ProduitResDTO> getProduitsParNomCategorie(String nomCategorie);
 }

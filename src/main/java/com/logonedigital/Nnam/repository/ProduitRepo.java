@@ -19,4 +19,8 @@ public interface ProduitRepo extends JpaRepository<Produit, Integer> {
 
 
     List<Produit> findByNomProduitContainingAndPrixUBetween(String nom, Double minPrice, Double maxPrice);
+
+   // @Query("SELECT p FROM Produit p WHERE p.categorie.nom = :nomCategorie")
+    //List<Produit> findByCategorieNom(@Param("nomCategorie") String nomCategorie);
+
 }

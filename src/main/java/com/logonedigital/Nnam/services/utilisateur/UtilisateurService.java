@@ -14,4 +14,5 @@ public interface UtilisateurService {
     void deleteUtilisateur(Integer id);
     Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection);
 
+    boolean loginAdmin(String email, String motDePasse);
 }

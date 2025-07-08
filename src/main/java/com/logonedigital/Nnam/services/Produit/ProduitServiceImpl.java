@@ -287,4 +287,11 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
             cs.endText();
         }
     }
+
+/*
+    public List<ProduitResDTO> getProduitsParNomCategorie(String nomCategorie) {
+        List<Produit> produits = produitRepository.findByCategorieNom(nomCategorie);
+        return produits.stream().map(produitMapper::from).collect(Collectors.toList());
+    }*/
+
 }
