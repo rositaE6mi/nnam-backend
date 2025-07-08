@@ -58,9 +58,6 @@ public class UtilisateurDTO {
     @ApiModelProperty(value = "ID du rôle de l'utilisateur")
     private Integer idRole; // On ne stocke que l'ID du rôle
 
-    @ApiModelProperty(value = "ID du profil de l'utilisateur")
-    private Integer idProfil; // On stocke uniquement l'ID du profil
-
     // Constructeur avec paramètres
     public UtilisateurDTO(Integer idUtilisateur, String nomUtilisateur, String prenomUtilisateur, String dateNaissance,
                           String lieuNaissance, String villeActuelle, String quartier, String boitePostale, String email,String motDePasse,
@@ -77,7 +74,7 @@ public class UtilisateurDTO {
         this.motDePasse = motDePasse;
         this.statut = statut;
         this.idRole = idRole;
-        this.idProfil = idProfil;
+
     }
 
     // Constructeur vide
@@ -178,14 +175,6 @@ public class UtilisateurDTO {
 
     public void setIdRole(Integer idRole) {
         this.idRole = idRole;
-    }
-
-    public Integer getIdProfil() {
-        return idProfil;
-    }
-
-    public void setIdProfil(Integer idProfil) {
-        this.idProfil = idProfil;
     }
 
     public class PasswordResetRequest {
