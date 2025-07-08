@@ -27,8 +27,9 @@ public class PasswordResetController {
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         try {
             passwordResetService.sendPasswordResetEmail(email);
-            return ResponseEntity.ok("Email de réinitialisation envoyé.");
+            return ResponseEntity.ok("Un email de réinitialisation envoyé.");
         } catch (Exception e) {
+            System.out.println("Test123" +e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email non trouvé.");
         }
     }
