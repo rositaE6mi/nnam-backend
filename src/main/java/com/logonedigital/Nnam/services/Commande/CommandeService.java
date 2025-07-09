@@ -11,10 +11,20 @@ import java.util.Optional;
 @Service
 public interface CommandeService {
     void addCommande(@Valid Commande commande);
-    Optional<Commande> getCommandeById(Integer id);
-    void UpdateCommande(Integer commandeId, Commande commande);
-    CommandeDTO getCommandeDTO(Integer id);
-    boolean DeleteCommande(Integer commandeId);
-    List<CommandeDTO> listerCommandes();
 
+
+    Optional<Commande> getCommandeById(Integer id);
+
+    void UpdateCommande(Integer commandeId, Commande commande);
+
+    // 📌 Récupérer une commande brute
+    Commande getCommande(Integer commandeId);
+
+    CommandeDTO getCommandeDTO(Integer id);
+
+    boolean DeleteCommande(Integer commandeId);
+
+    List<CommandeDTO> listerCommandes();
 }
+
+
