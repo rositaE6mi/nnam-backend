@@ -5,47 +5,43 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.aspectj.bridge.Message;
 
+import java.time.LocalDate;
 import java.util.Date;
 //refaire les validations sur les entites
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProduit;
+    private Integer idProduit;
 
-
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be null")
+    //@NotEmpty(message = "Please fill this")
     private String nomProduit;
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
+
+    //@NotEmpty(message = "Please fill this")
     private String description;
 
     @Column(nullable = false)
-    @NotEmpty(message = "please fill this")
-    @NotNull(message = "this fill couldn't be!")
-    private double prixU;
+    //@NotNull(message = "Price cannot be null")
+    private Double prixU; //
 
     @Column(nullable = false)
-    @NotNull(message = "date couldn't be null")
-    private Date dateExpiration;
+    //@NotNull(message = "Date cannot be null")
+    private LocalDate dateExpiration;
+
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "categorie_id", nullable = false)
     private Categorie categorie;
 
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "stock_id", nullable = false)
+    @JoinColumn(name = "stock_id", unique = true) //
     private Stock stock;
 }

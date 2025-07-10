@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 @RestControllerAdvice
+
+
 public class GlobalExceptionHandler {
 
     // Gestion des ressources non trouvées (404 Not Found)
@@ -26,7 +30,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body(ex.getMessage());
     }
 
+
     // Gestion des erreurs de validation (400 Bad Request)
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -39,9 +45,11 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
+
     // Gestion des erreurs internes du serveur (500 Internal Server Error)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGlobalException(Exception ex) {
         return ResponseEntity.status(500).body("Une erreur s'est produite : " + ex.getMessage());
     }
+
 }
