@@ -186,12 +186,42 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateursPage.map(utilisateurMapper::toUtilisateurDTO);
     }
 
-    public boolean loginAdmin(String email, String motDePasse) {
+    @Override
+    /*public Optional<String> login(String email, String motDePasse) {
         Optional<Utilisateur> utilisateurOptional = utilisateurRepo.findByEmail(email);
         if (utilisateurOptional.isPresent()) {
             Utilisateur utilisateur = utilisateurOptional.get();
-            return passwordEncoder.matches(motDePasse, utilisateur.getMotDePasse()) && utilisateur.getRole().getNomRole().equals("ADMIN");
+            if (passwordEncoder.matches(motDePasse, utilisateur.getMotDePasse())) {
+                String role = utilisateur.getRole().getNomRole().trim().toUpperCase(); // ✅ normalisation ici
+                System.out.println("Role trouvé : " + role); // pour vérification console
+                return Optional.of(role);
+            }
         }
-        return false;
+        return Optional.empty();
+    }*/
+    public Optional<String> login(String email, String motDePasse) {
+        Optional<Utilisateur> userOpt = utilisateurRepo.findByEmail(email);
+        if (userOpt.isPresent()) {
+            Utilisateur user = userOpt.get();
+            if (passwordEncoder.matches(motDePasse, user.getMotDePasse())) {
+                String role = "";
+                if (user.getRole().getIdRole() == 4) role = "ADMIN";
+                else if (user.getRole().getIdRole() == 2) role = "AGRICULTEUR";
+                else if (user.getRole().getIdRole() == 3) role = "CLIENT";
+                return Optional.of(role);
+            }
+        }
+        return Optional.empty();
     }
+
+    @Override
+    public UtilisateurDTO getByEmail(String email) {
+        Utilisateur utilisateur = utilisateurRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'email : " + email));
+        return utilisateurMapper.toUtilisateurDTO(utilisateur);
+    }
+
+
+
+
 }

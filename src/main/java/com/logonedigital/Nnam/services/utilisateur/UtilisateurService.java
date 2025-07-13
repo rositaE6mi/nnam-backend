@@ -5,6 +5,7 @@ import com.logonedigital.Nnam.entities.Utilisateur;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UtilisateurService {
     UtilisateurDTO addUtilisateur (UtilisateurDTO utilisateurDTO);
@@ -14,5 +15,7 @@ public interface UtilisateurService {
     void deleteUtilisateur(Integer id);
     Page<UtilisateurDTO> getUtilisateurs(int page, int size, String sortBy, String sortDirection);
 
-    boolean loginAdmin(String email, String motDePasse);
+    Optional<String> login(String email, String motDePasse);
+
+    UtilisateurDTO getByEmail(String email);
 }

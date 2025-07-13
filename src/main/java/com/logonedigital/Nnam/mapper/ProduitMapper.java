@@ -16,11 +16,10 @@ public interface ProduitMapper {
     Produit getProduitFromProduitReqDTO(ProduitReqDTO produitReqDTO);
 
 
-    //@Mapping(source = "categorie.idCat", target = "categorieId")
-    //ProduitResDTO from(Produit produit);
-    //@Mapping( source = "stock.id", target = "stock.idStock")
-    //@Mapping(source = "categorie.idCat", target = "categorieId")
+
+    @Mapping( source = "stock.idStock", target = "stock.idStock")
+    @Mapping(source = "categorie.idCat", target = "categorieId")
     ProduitResDTO getProduitResDTOFromProduit(Produit produit);
     //@Mapping(source = "categorie.idCat", target = "categorieId")
-
+    List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
 }

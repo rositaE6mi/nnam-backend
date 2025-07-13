@@ -12,4 +12,5 @@ public interface ProfilService {
         ProfilDTO updateProfil(Integer idProfil, ProfilDTO profilDTO);
         void deleteProfil(Integer idProfil);
 
+    ProfilDTO getProfilByUserId(Integer idUtilisateur);
 }

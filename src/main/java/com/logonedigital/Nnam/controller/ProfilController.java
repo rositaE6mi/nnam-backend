@@ -59,4 +59,11 @@ public class ProfilController {
                 .status(202)
                 .body("Profil suprime avec succes");
     }
+
+    @GetMapping("/getByUser/{idUtilisateur}")
+    public ResponseEntity<ProfilDTO> getProfilByUserId(@PathVariable Integer idUtilisateur) {
+        ProfilDTO profilDTO = profilService.getProfilByUserId(idUtilisateur);
+        return ResponseEntity.ok(profilDTO);
+    }
+
 }

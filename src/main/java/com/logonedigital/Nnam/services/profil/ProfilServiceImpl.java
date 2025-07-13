@@ -89,4 +89,12 @@ public class ProfilServiceImpl implements ProfilService{
 
 
     }
+
+    @Override
+    public ProfilDTO getProfilByUserId(Integer idUtilisateur) {
+        Profil profil = profilRepo.findByUtilisateurIdUtilisateur(idUtilisateur)
+                .orElseThrow(() -> new ResourceNotFoundException("Profil non trouvé pour l'utilisateur " + idUtilisateur));
+        return profilMapper.toProfilDTO(profil);
+    }
+
 }
