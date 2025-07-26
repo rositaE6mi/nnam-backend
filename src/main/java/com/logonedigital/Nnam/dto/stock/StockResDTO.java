@@ -9,4 +9,6 @@ public class StockResDTO {
     private Integer idStock;
     private String nom;
     private Integer quantiteStock;
+
+
 }

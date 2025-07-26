@@ -19,11 +19,15 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import com.logonedigital.Nnam.dto.stock.StockResDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -64,6 +68,50 @@ public class ProduitServiceImpl implements ProduitService {
         return produitRepository.save(produit);
 
     }
+    @Override
+    public Produit addProduit(ProduitReqDTO produitReqDTO, MultipartFile imageFile) {
+        Categorie categorie = categorieRepository
+                .findById(produitReqDTO.getCategorieId())
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'ID : " + produitReqDTO.getCategorieId()));
+
+        // Créer le stock
+        Stock stock = new Stock();
+        stock.setNom(produitReqDTO.getStock().getNom());
+        stock.setQuantiteStock(produitReqDTO.getStock().getQuantiteStock());
+        Stock savedStock = stockRepository.save(stock);
+
+        // Créer le produit
+        Produit produit = produitMapper.getProduitFromProduitReqDTO(produitReqDTO);
+        produit.setCategorie(categorie);
+        produit.setStock(savedStock);
+
+        // Gérer l'image
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imagePath = saveImageLocally(imageFile);
+            produit.setImageUrl(imagePath);
+        } else {
+            // Image par défaut si non fournie
+            String defaultUrl = getDefaultImageUrl(categorie.getNomCat());
+            produit.setImageUrl(defaultUrl);
+        }
+
+        return produitRepository.save(produit);
+    }
+
+    private String saveImageLocally(MultipartFile imageFile) {
+        try {
+            String uploadDir = "uploads/";
+            String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + fileName);
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, imageFile.getBytes());
+
+            return "/uploads/" + fileName; // accessible depuis frontend
+        } catch (IOException e) {
+            throw new RuntimeException("Échec de la sauvegarde de l'image : " + e.getMessage());
+        }
+    }
+
 
     @Override
     public ProduitResDTO updateProduit(int idProduit, ProduitReqDTO produitReqDTO) {
@@ -293,5 +341,50 @@ public byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Except
         List<Produit> produits = produitRepository.findByCategorieNom(nomCategorie);
         return produits.stream().map(produitMapper::from).collect(Collectors.toList());
     }*/
+
+
+
+    @Override
+    public List<ProduitResDTO> getProduitsPhares() {
+        List<Produit> produits = produitRepository.findTop8ByOrderByIdProduitDesc();
+        return produitMapper.toDtoProduitList(produits);
+    }
+
+
+    private ProduitResDTO convertToResDTO(Produit produit) {
+        StockResDTO stockResDTO = new StockResDTO(
+                produit.getStock().getIdStock(),
+                produit.getStock().getNom(),
+                produit.getStock().getQuantiteStock()
+        );
+
+        // Générer une URL d'image par défaut en fonction de la catégorie
+        String imageUrl = getDefaultImageUrl(produit.getCategorie().getNomCat());
+
+        return new ProduitResDTO(
+                produit.getIdProduit(),
+                produit.getNomProduit(),
+                produit.getDescription(),
+                produit.getPrixU(),
+                produit.getDateExpiration(),
+                produit.getCategorie().getIdCat(),
+                stockResDTO,
+                produit.getImageUrl()
+        );
+    }
+
+    private String getDefaultImageUrl(String nomCategorie) {
+        // Adapter selon vos images disponibles dans assets/images/
+        return switch (nomCategorie.toLowerCase()) {
+            case "fruits" -> "assets/images/fruits.jpg";
+            case "legumes" -> "assets/images/legumes.jpg";
+            case "epices" -> "assets/images/epices.jpg";
+            case "tubercules" -> "assets/images/tubercules.jpg";
+            default -> "assets/images/default.jpg";
+        };
+    }
+
+
+
 
 }

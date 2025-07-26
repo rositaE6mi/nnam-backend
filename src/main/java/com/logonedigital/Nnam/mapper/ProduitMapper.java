@@ -13,13 +13,20 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {com.logonedigital.Nnam.mapper.StockMapper.class})
 //@Configuration
 public interface ProduitMapper {
+    @Mapping(source="categorieId", target = "categorie.idCat")
     Produit getProduitFromProduitReqDTO(ProduitReqDTO produitReqDTO);
 
 
 
+    //@Mapping(source = "categorie.idCat", target = "categorieId")
+    //ProduitResDTO from(Produit produit);
+
     @Mapping( source = "stock.idStock", target = "stock.idStock")
     @Mapping(source = "categorie.idCat", target = "categorieId")
     ProduitResDTO getProduitResDTOFromProduit(Produit produit);
-    //@Mapping(source = "categorie.idCat", target = "categorieId")
+    @Mapping(source = "categorie.idCat", target = "categorieId")
     List<ProduitResDTO> toDtoProduitList(List<Produit> produits);
+
+
+
 }

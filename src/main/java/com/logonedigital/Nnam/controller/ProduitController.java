@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,11 +27,21 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/produits")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProduitController {
     private final ProduitService produitService;
 
     public ProduitController(ProduitService produitService) {
         this.produitService = produitService;
+    }
+    @PostMapping(value = "/add-with-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   // @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<Produit> addProduit(
+            @RequestPart("produit") @Valid ProduitReqDTO produitReqDTO,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ) {
+        Produit savedProduit = produitService.addProduit(produitReqDTO, imageFile);
+        return ResponseEntity.status(201).body(savedProduit);
     }
 
     @PostMapping("/add")
@@ -127,4 +138,11 @@ public class ProduitController {
                     ));
         }
     }
+
+    @GetMapping("/phares")
+    public ResponseEntity<List<ProduitResDTO>> getProduitsPhares() {
+        return ResponseEntity.ok(produitService.getProduitsPhares());
+    }
+
+    
 }

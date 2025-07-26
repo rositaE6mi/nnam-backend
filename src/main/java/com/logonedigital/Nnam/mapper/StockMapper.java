@@ -13,6 +13,9 @@ import java.util.List;
 //@Configuration
 public interface StockMapper {
     @Mapping(source = "idStock", target = "idStock")
+
+    //Mapping(source = "id", target = "idStock")
+
     StockResDTO toDTO(Stock stock);
     Stock toEntity(StockReqDTO dto);
     List<StockResDTO> toDtoList(List<Stock> stock);

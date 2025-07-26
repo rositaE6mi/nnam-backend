@@ -7,6 +7,7 @@ import com.logonedigital.Nnam.entities.Produit;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -28,5 +29,10 @@ public interface ProduitService {
 
     byte[] generateProduitsPdfReport(PdfExportConfigDTO config) throws Exception;
 
-   // List<ProduitResDTO> getProduitsParNomCategorie(String nomCategorie);
+    List<ProduitResDTO> getProduitsPhares();
+
+
+    Produit addProduit(ProduitReqDTO produitReqDTO, MultipartFile imageFile);
+
+    // List<ProduitResDTO> getProduitsParNomCategorie(String nomCategorie);
 }

@@ -15,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,9 @@ public class Produit {
     @Column(nullable = false)
     //@NotNull(message = "Date cannot be null")
     private LocalDate dateExpiration;
+    @Column(name = "image_url")
+    private String imageUrl;
+
 
 
     @JsonBackReference

@@ -25,4 +25,6 @@ public class ProduitReqDTO {
     private Integer categorieId;
     @NotNull
     private StockReqDTO stock;
+    private String imageUrl;
+
 }
