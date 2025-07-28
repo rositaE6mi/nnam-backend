@@ -34,16 +34,18 @@ public class ProduitController {
     public ProduitController(ProduitService produitService) {
         this.produitService = produitService;
     }
-    @PostMapping(value = "/add-with-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
    // @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<Produit> addProduit(
             @RequestPart("produit") @Valid ProduitReqDTO produitReqDTO,
             @RequestPart(value = "image", required = false) MultipartFile imageFile
     ) {
         Produit savedProduit = produitService.addProduit(produitReqDTO, imageFile);
-        return ResponseEntity.status(201).body(savedProduit);
+        return ResponseEntity
+                .status(201)
+                .body(savedProduit);
     }
-
+/*
     @PostMapping("/add")
     public ResponseEntity<Produit> addProduit(@Valid @RequestBody ProduitReqDTO produitReqDTO) {
         Produit savedProduit = produitService.addProduit(produitReqDTO);
@@ -51,7 +53,7 @@ public class ProduitController {
                 .status(201)
                 .body(savedProduit);
     }
-
+*/
     @PutMapping("/update/{id}")
     public ResponseEntity<ProduitResDTO> updateProduit(@PathVariable int id, @RequestBody ProduitReqDTO produit) {
         ProduitResDTO updatedProduit = produitService.updateProduit(id, produit);
