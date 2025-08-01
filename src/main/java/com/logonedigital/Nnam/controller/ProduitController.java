@@ -1,12 +1,18 @@
 package com.logonedigital.Nnam.controller;
 
 import com.logonedigital.Nnam.dto.PdfExportConfigDTO;
+import com.logonedigital.Nnam.dto.ProduitUploadRequest;
 import com.logonedigital.Nnam.dto.produit.ProduitReqDTO;
 import com.logonedigital.Nnam.dto.produit.ProduitResDTO;
 import com.logonedigital.Nnam.entities.Produit;
 import com.logonedigital.Nnam.exception.ResourceNotFoundException;
 import com.logonedigital.Nnam.services.Produit.ProduitService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +40,26 @@ public class ProduitController {
     public ProduitController(ProduitService produitService) {
         this.produitService = produitService;
     }
+
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Ajouter un produit avec une image",
+            requestBody = @RequestBody(
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                            schema = @Schema(implementation = ProduitUploadRequest.class)
+                    )
+            )
+    )
+    public ResponseEntity<Produit> addProduit(
+            @RequestPart("produit") @Valid ProduitReqDTO produitReqDTO,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ) {
+        Produit savedProduit = produitService.addProduit(produitReqDTO, imageFile);
+        return ResponseEntity.status(201).body(savedProduit);
+    }
+    /*@PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
    // @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<Produit> addProduit(
             @RequestPart("produit") @Valid ProduitReqDTO produitReqDTO,
@@ -44,7 +69,7 @@ public class ProduitController {
         return ResponseEntity
                 .status(201)
                 .body(savedProduit);
-    }
+    }*/
 /*
     @PostMapping("/add")
     public ResponseEntity<Produit> addProduit(@Valid @RequestBody ProduitReqDTO produitReqDTO) {

@@ -49,4 +49,69 @@ public class Produit {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "stock_id", unique = true) //
     private Stock stock;
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+
+    }
+
+    public LocalDate getDateExpiration() {
+        return dateExpiration;
+    }
+
+    public void setDateExpiration(LocalDate dateExpiration) {
+        this.dateExpiration = dateExpiration;
+    }
+
+    public Double getPrixU() {
+        return prixU;
+    }
+
+    public void setPrixU(Double prixU) {
+        this.prixU = prixU;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getNomProduit() {
+        return nomProduit;
+    }
+
+    public void setNomProduit(String nomProduit) {
+        this.nomProduit = nomProduit;
+    }
+
+    public Integer getIdProduit() {
+        return idProduit;
+    }
+
+    public void setIdProduit(Integer idProduit) {
+        this.idProduit = idProduit;
+    }
 }

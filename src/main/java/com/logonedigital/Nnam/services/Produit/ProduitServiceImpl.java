@@ -88,7 +88,7 @@ public class ProduitServiceImpl implements ProduitService {
         // Gérer l'image
         if (imageFile != null && !imageFile.isEmpty()) {
             String imagePath = saveImageLocally(imageFile);
-            produit.setImageUrl(imagePath);
+            produit.setImageUrl("uploads/produits" + imagePath);
         } else {
             // Image par défaut si non fournie
             String defaultUrl = getDefaultImageUrl(categorie.getNomCat());
@@ -100,13 +100,13 @@ public class ProduitServiceImpl implements ProduitService {
 
     private String saveImageLocally(MultipartFile imageFile) {
         try {
-            String uploadDir = "uploads/";
+            String uploadDir = "uploads/produits";
             String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
             Path filePath = Paths.get(uploadDir + fileName);
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, imageFile.getBytes());
 
-            return "/uploads/" + fileName; // accessible depuis frontend
+            return "/uploads/produits" + fileName; // accessible depuis frontend
         } catch (IOException e) {
             throw new RuntimeException("Échec de la sauvegarde de l'image : " + e.getMessage());
         }
